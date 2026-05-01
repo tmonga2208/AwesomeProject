@@ -56,10 +56,11 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Manrope-SemiBold.ttf</string>
-		<string>Manrope-Medium.ttf</string>
 		<string>Manrope-Bold.ttf</string>
+		<string>Manrope-SemiBold.ttf</string>
 		<string>Manrope-Regular.ttf</string>
+		<string>Manrope-Medium.ttf</string>
+		<string>Manrope-VariableFont_wght.ttf</string>
 	</array>
 </dict>
 </plist>

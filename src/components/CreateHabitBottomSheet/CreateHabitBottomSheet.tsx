@@ -55,12 +55,16 @@ const CreateHabitBottomSheet = forwardRef<CreateHabitBottomSheetRef, Props>(
 const styles = StyleSheet.create({
   background: {
     backgroundColor: theme.colors.surface,
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
+    borderTopLeftRadius: theme.radius.xl,
+    borderTopRightRadius: theme.radius.xl,
+    ...theme.shadows.glass,
   },
   indicator: {
     backgroundColor: theme.colors.outlineVariant,
-    width: 40,
+    width: 48,
+    height: 4,
+    borderRadius: 2,
+    marginTop: 12,
   },
   container: {
     flex: 1,
@@ -69,15 +73,17 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.h2,
-    fontWeight: theme.typography.weights.bold,
+    fontWeight: theme.typography.weights.semibold,
     color: theme.colors.onSurface,
     marginBottom: theme.spacing.xs,
+    letterSpacing: theme.typography.letterSpacings.h2,
   },
   subtitle: {
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.bodyMd,
-    color: theme.colors.onSurfaceVariant,
+    color: theme.colors.outline,
     marginBottom: theme.spacing.xl,
+    letterSpacing: theme.typography.letterSpacings.bodyMd,
   },
   placeholderContent: {
     flex: 1,

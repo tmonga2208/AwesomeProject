@@ -3,19 +3,23 @@
   "data": [
     {
       "path": "assets/fonts/Manrope-Bold.ttf",
-      "sha1": "78fb38f212fa49029aff24c669a39648d9b4e68b"
+      "sha1": "c44909e751e226f188c3112e011617e6d2ce2408"
     },
     {
       "path": "assets/fonts/Manrope-Medium.ttf",
-      "sha1": "78fb38f212fa49029aff24c669a39648d9b4e68b"
+      "sha1": "c44909e751e226f188c3112e011617e6d2ce2408"
     },
     {
       "path": "assets/fonts/Manrope-Regular.ttf",
-      "sha1": "78fb38f212fa49029aff24c669a39648d9b4e68b"
+      "sha1": "c44909e751e226f188c3112e011617e6d2ce2408"
     },
     {
       "path": "assets/fonts/Manrope-SemiBold.ttf",
-      "sha1": "78fb38f212fa49029aff24c669a39648d9b4e68b"
+      "sha1": "c44909e751e226f188c3112e011617e6d2ce2408"
+    },
+    {
+      "path": "assets/fonts/Manrope-VariableFont_wght.ttf",
+      "sha1": "c44909e751e226f188c3112e011617e6d2ce2408"
     }
   ]
 }

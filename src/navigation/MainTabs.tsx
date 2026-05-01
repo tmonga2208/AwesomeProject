@@ -95,15 +95,14 @@ const MainTabs = () => {
 };
 
 const styles = StyleSheet.create({
-  // Custom Tab Bar
   tabBarContainer: {
     flexDirection: 'row',
     backgroundColor: theme.colors.surface,
-    paddingBottom: Platform.OS === 'ios' ? 24 : 16,
-    paddingTop: 12,
+    paddingBottom: Platform.OS === 'ios' ? 32 : 24,
+    paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: theme.colors.outlineVariant,
-    ...theme.shadows.soft,
+    borderTopColor: 'rgba(0,0,0,0.03)',
+    ...theme.shadows.glass,
     elevation: 10,
   },
   tabItem: {
@@ -115,9 +114,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: theme.radius.full,
     gap: 4,
   },
   tabContentActive: {
@@ -125,13 +124,13 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 10,
-    fontWeight: theme.typography.weights.semibold,
+    fontWeight: theme.typography.weights.bold,
     fontFamily: theme.typography.fonts.primary,
     color: theme.colors.outline,
     letterSpacing: 0.5,
   },
   tabLabelActive: {
-    color: theme.colors.primary,
+    color: theme.colors.onPrimaryContainer,
   },
 });
 

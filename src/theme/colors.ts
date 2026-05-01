@@ -6,49 +6,60 @@
  */
 export const colors = {
   // ── Core ──────────────────────────────────────────────────
-  primary: '#7D927D',           // Sage — actions, completion, progress
-  primaryContainer: '#D5EDD0',  // Soft sage tint for icon badges
-  onPrimary: '#FFFFFF',
-  onPrimaryContainer: '#2D4A32',
+  primary: '#4d614e',           // Sage — actions, completion, progress
+  primaryContainer: '#657a66',
+  onPrimary: '#ffffff',
+  onPrimaryContainer: '#f7fff3',
+  inversePrimary: '#b6ccb5',
 
-  secondary: '#505E81',
-  secondaryContainer: '#C6D4FD',
-  onSecondary: '#FFFFFF',
-  onSecondaryContainer: '#4D5B7E',
+  secondary: '#505e81',
+  secondaryContainer: '#c6d4fd',
+  onSecondary: '#ffffff',
+  onSecondaryContainer: '#4d5b7e',
 
-  tertiary: '#74535B',
-  tertiaryContainer: '#8E6B73',
-  onTertiary: '#FFFFFF',
-  onTertiaryContainer: '#FFFBFF',
+  tertiary: '#74535b',
+  tertiaryContainer: '#8e6b73',
+  onTertiary: '#ffffff',
+  onTertiaryContainer: '#fffbff',
 
   // ── Surfaces ─────────────────────────────────────────────
-  background: '#FBF9F6',       // Bone
-  onBackground: '#2D2D2D',    // Stone
+  background: '#fbf9f6',       // Bone
+  onBackground: '#1b1c1a',    // Stone
 
-  surface: '#FFFFFF',          // Cards
-  surfaceDim: '#DBDAD7',
-  surfaceBright: '#FBF9F6',
-  surfaceVariant: '#EFECEA',   // Sand — secondary buttons, containers
-  onSurface: '#2D2D2D',       // Stone
-  onSurfaceVariant: '#6B6B6B', // Muted text
+  surface: '#fbf9f6',          // Cards
+  surfaceDim: '#dbdad7',
+  surfaceBright: '#fbf9f6',
+  surfaceVariant: '#e4e2df',
+  surfaceContainerLowest: '#ffffff',
+  surfaceContainerLow: '#f5f3f0',
+  surfaceContainer: '#efeeea',
+  surfaceContainerHigh: '#e9e8e5',
+  surfaceContainerHighest: '#e4e2df',
+
+  onSurface: '#1b1c1a',       // Stone
+  onSurfaceVariant: '#434842', // Muted text
+  inverseSurface: '#30312f',
+  inverseOnSurface: '#f2f0ed',
+
+  surfaceTint: '#4f6350',
 
   // ── Outlines ─────────────────────────────────────────────
-  outline: '#9B9B9B',
-  outlineVariant: '#E0DDD9',
+  outline: '#737872',
+  outlineVariant: '#c3c8c0',
 
   // ── Error ────────────────────────────────────────────────
-  error: '#BA1A1A',
-  onError: '#FFFFFF',
-  errorContainer: '#FFDAD6',
-  onErrorContainer: '#93000A',
+  error: '#ba1a1a',
+  onError: '#ffffff',
+  errorContainer: '#ffdad6',
+  onErrorContainer: '#93000a',
 
   // ── Custom habit colors (desaturated semantic tones) ─────
   habits: {
-    health: '#8E6B73',
-    fitness: '#505E81',
-    mindfulness: '#7D927D',
-    productivity: '#74535B',
-    creative: '#8C7051',
+    health: '#8e6b73',
+    fitness: '#505e81',
+    mindfulness: '#7d927d',
+    productivity: '#74535b',
+    creative: '#8c7051',
   }
 };
 

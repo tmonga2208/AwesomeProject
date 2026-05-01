@@ -9,19 +9,19 @@ import { Platform } from 'react-native';
 export const typography = {
   fonts: {
     primary: Platform.select({
-      ios: 'Georgia',
-      android: 'serif',
-      default: 'serif',
+      ios: 'Manrope',
+      android: 'Manrope',
+      default: 'Manrope',
     }),
     display: Platform.select({
-      ios: 'Georgia',
-      android: 'serif',
-      default: 'serif',
+      ios: 'Manrope',
+      android: 'Manrope',
+      default: 'Manrope',
     }),
     secondary: Platform.select({
       ios: 'Manrope',
       android: 'Manrope',
-      default: 'System',
+      default: 'Manrope',
     }),
   },
   sizes: {
@@ -32,7 +32,7 @@ export const typography = {
     bodyMd: 16,   // Default body
     bodySm: 14,   // Small body / descriptions
     caption: 12,  // Captions, metadata
-    labelCaps: 11, // All-caps labels, section headers
+    labelCaps: 12, // All-caps labels, section headers
   },
   weights: {
     regular: '400' as const,
@@ -51,10 +51,11 @@ export const typography = {
     labelCaps: 16,
   },
   letterSpacings: {
-    h1: -0.64,      // Tight tracking for headlines
-    h2: -0.24,
-    body: 0.16,
-    labelCaps: 1.0,  // Wide tracking for section headers
+    h1: -0.64,      // -0.02em = 32 * -0.02
+    h2: -0.24,      // -0.01em = 24 * -0.01
+    bodyLg: 0.18,   // 0.01em = 18 * 0.01
+    bodyMd: 0.16,   // 0.01em = 16 * 0.01
+    labelCaps: 0.96, // 0.08em = 12 * 0.08
   }
 };
 
