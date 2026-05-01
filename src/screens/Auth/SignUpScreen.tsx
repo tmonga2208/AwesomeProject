@@ -66,7 +66,7 @@ const SignUpScreen = () => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Background Gradient */}
       <View style={StyleSheet.absoluteFill}>
@@ -82,7 +82,7 @@ const SignUpScreen = () => {
         </Svg>
       </View>
 
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
@@ -100,76 +100,90 @@ const SignUpScreen = () => {
 
           {/* Form Card */}
           <View style={styles.card}>
-            <Text style={styles.inputLabel}>Display name</Text>
-            <View style={styles.inputContainer}>
-              <Feather name="user" size={18} color={theme.colors.outline} style={styles.inputIcon} />
-              <TextInput
-                value={displayName}
-                placeholder="Your Name"
-                placeholderTextColor={theme.colors.outline}
-                onChangeText={setDisplayName}
-                style={styles.input}
-              />
+            <View style={[StyleSheet.absoluteFill, { borderRadius: 32, overflow: 'hidden' }]}>
+              <Svg height="100%" width="100%">
+                <Defs>
+                  <LinearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <Stop offset="0%" stopColor="rgba(255, 255, 255, 0.8)" stopOpacity="1" />
+                    <Stop offset="100%" stopColor="rgba(241, 239, 234, 0.6)" stopOpacity="1" />
+                  </LinearGradient>
+                </Defs>
+                <Rect width="100%" height="100%" fill="url(#cardGrad)" />
+              </Svg>
             </View>
 
-            <Text style={styles.inputLabel}>Email address</Text>
-            <View style={styles.inputContainer}>
-              <Feather name="mail" size={18} color={theme.colors.outline} style={styles.inputIcon} />
-              <TextInput
-                autoCapitalize="none"
-                value={emailAddress}
-                placeholder="name@example.com"
-                placeholderTextColor={theme.colors.outline}
-                onChangeText={setEmailAddress}
-                style={styles.input}
-                keyboardType="email-address"
-                autoComplete="email"
-              />
-            </View>
+            <View style={{ position: 'relative', zIndex: 1 }}>
+              <Text style={styles.inputLabel}>Display name</Text>
+              <View style={styles.inputContainer}>
+                <Feather name="user" size={18} color={theme.colors.outline} style={styles.inputIcon} />
+                <TextInput
+                  value={displayName}
+                  placeholder="Your Name"
+                  placeholderTextColor={theme.colors.outline}
+                  onChangeText={setDisplayName}
+                  style={styles.input}
+                />
+              </View>
 
-            <Text style={styles.inputLabel}>Password</Text>
-            <View style={styles.inputContainer}>
-              <Feather name="lock" size={18} color={theme.colors.outline} style={styles.inputIcon} />
-              <TextInput
-                value={password}
-                placeholder="••••••••"
-                placeholderTextColor={theme.colors.outline}
-                secureTextEntry={!showPassword}
-                onChangeText={setPassword}
-                style={styles.input}
-                autoComplete="new-password"
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Feather name={showPassword ? "eye-off" : "eye"} size={18} color={theme.colors.outline} />
+              <Text style={styles.inputLabel}>Email address</Text>
+              <View style={styles.inputContainer}>
+                <Feather name="mail" size={18} color={theme.colors.outline} style={styles.inputIcon} />
+                <TextInput
+                  autoCapitalize="none"
+                  value={emailAddress}
+                  placeholder="name@example.com"
+                  placeholderTextColor={theme.colors.outline}
+                  onChangeText={setEmailAddress}
+                  style={styles.input}
+                  keyboardType="email-address"
+                  autoComplete="email"
+                />
+              </View>
+
+              <Text style={styles.inputLabel}>Password</Text>
+              <View style={styles.inputContainer}>
+                <Feather name="lock" size={18} color={theme.colors.outline} style={styles.inputIcon} />
+                <TextInput
+                  value={password}
+                  placeholder="••••••••"
+                  placeholderTextColor={theme.colors.outline}
+                  secureTextEntry={!showPassword}
+                  onChangeText={setPassword}
+                  style={styles.input}
+                  autoComplete="new-password"
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Feather name={showPassword ? "eye-off" : "eye"} size={18} color={theme.colors.outline} />
+                </TouchableOpacity>
+              </View>
+
+              <Text style={styles.inputLabel}>Confirm Password</Text>
+              <View style={styles.inputContainer}>
+                <Feather name="shield" size={18} color={theme.colors.outline} style={styles.inputIcon} />
+                <TextInput
+                  value={confirmPassword}
+                  placeholder="••••••••"
+                  placeholderTextColor={theme.colors.outline}
+                  secureTextEntry={!showConfirmPassword}
+                  onChangeText={setConfirmPassword}
+                  style={styles.input}
+                  autoComplete="new-password"
+                />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  <Feather name={showConfirmPassword ? "eye-off" : "eye"} size={18} color={theme.colors.outline} />
+                </TouchableOpacity>
+              </View>
+
+              <TouchableOpacity
+                style={[styles.signUpButton, loading && styles.buttonDisabled]}
+                onPress={onSignUpPress}
+                disabled={loading}
+              >
+                <Text style={styles.signUpButtonText}>
+                  {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT'}
+                </Text>
               </TouchableOpacity>
             </View>
-
-            <Text style={styles.inputLabel}>Confirm Password</Text>
-            <View style={styles.inputContainer}>
-              <Feather name="shield" size={18} color={theme.colors.outline} style={styles.inputIcon} />
-              <TextInput
-                value={confirmPassword}
-                placeholder="••••••••"
-                placeholderTextColor={theme.colors.outline}
-                secureTextEntry={!showConfirmPassword}
-                onChangeText={setConfirmPassword}
-                style={styles.input}
-                autoComplete="new-password"
-              />
-              <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-                <Feather name={showConfirmPassword ? "eye-off" : "eye"} size={18} color={theme.colors.outline} />
-              </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity
-              style={[styles.signUpButton, loading && styles.buttonDisabled]}
-              onPress={onSignUpPress}
-              disabled={loading}
-            >
-              <Text style={styles.signUpButtonText}>
-                {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT'}
-              </Text>
-            </TouchableOpacity>
           </View>
 
           {/* Footer Link */}
@@ -189,6 +203,7 @@ const SignUpScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F1EFEA',
   },
   scrollContent: {
     flexGrow: 1,
@@ -216,26 +231,26 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '600',
     color: theme.colors.onSurface,
-    fontFamily: theme.typography.fonts.primary,
+    fontFamily: theme.typography.fonts.display,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
     color: theme.colors.onSurfaceVariant,
-    fontFamily: theme.typography.fonts.primary,
+    fontFamily: theme.typography.fonts.display,
     textAlign: 'center',
     lineHeight: 24,
   },
 
   // Card
   card: {
-    backgroundColor: 'rgba(245, 244, 240, 0.6)',
     borderRadius: 32,
     padding: 24,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
+    borderColor: 'rgba(255, 255, 255, 0.4)',
     ...theme.shadows.soft,
     marginBottom: 32,
+    overflow: 'hidden',
   },
   inputLabel: {
     fontSize: 13,
@@ -248,10 +263,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.05)',
+    borderColor: 'rgba(255, 255, 255, 0.5)',
     paddingHorizontal: 16,
     marginBottom: 20,
   },

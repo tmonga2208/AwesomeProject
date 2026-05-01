@@ -56,7 +56,7 @@ const SignInScreen = () => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       {/* Background Gradient */}
       <View style={StyleSheet.absoluteFill}>
@@ -72,7 +72,7 @@ const SignInScreen = () => {
         </Svg>
       </View>
 
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
         <ScrollView
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
@@ -90,69 +90,83 @@ const SignInScreen = () => {
 
           {/* Form Card */}
           <View style={styles.card}>
-            <Text style={styles.inputLabel}>Email address</Text>
-            <View style={styles.inputContainer}>
-              <Feather name="mail" size={18} color={theme.colors.outline} style={styles.inputIcon} />
-              <TextInput
-                autoCapitalize="none"
-                value={emailAddress}
-                placeholder="name@example.com"
-                placeholderTextColor={theme.colors.outline}
-                onChangeText={setEmailAddress}
-                style={styles.input}
-                keyboardType="email-address"
-                autoComplete="email"
-              />
+            <View style={[StyleSheet.absoluteFill, { borderRadius: 32, overflow: 'hidden' }]}>
+              <Svg height="100%" width="100%">
+                <Defs>
+                  <LinearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <Stop offset="0%" stopColor="rgba(255, 255, 255, 0.8)" stopOpacity="1" />
+                    <Stop offset="100%" stopColor="rgba(241, 239, 234, 0.6)" stopOpacity="1" />
+                  </LinearGradient>
+                </Defs>
+                <Rect width="100%" height="100%" fill="url(#cardGrad)" />
+              </Svg>
             </View>
 
-            <View style={styles.passwordHeader}>
-              <Text style={styles.inputLabel}>Password</Text>
-              <TouchableOpacity>
-                <Text style={styles.forgotPassword}>Forgot Password?</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.inputContainer}>
-              <Feather name="lock" size={18} color={theme.colors.outline} style={styles.inputIcon} />
-              <TextInput
-                value={password}
-                placeholder="••••••••"
-                placeholderTextColor={theme.colors.outline}
-                secureTextEntry={!showPassword}
-                onChangeText={setPassword}
-                style={styles.input}
-                autoComplete="password"
-              />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Feather name={showPassword ? "eye-off" : "eye"} size={18} color={theme.colors.outline} />
-              </TouchableOpacity>
-            </View>
+            <View style={{ position: 'relative', zIndex: 1 }}>
+              <Text style={styles.inputLabel}>Email address</Text>
+              <View style={styles.inputContainer}>
+                <Feather name="mail" size={18} color={theme.colors.outline} style={styles.inputIcon} />
+                <TextInput
+                  autoCapitalize="none"
+                  value={emailAddress}
+                  placeholder="name@example.com"
+                  placeholderTextColor={theme.colors.outline}
+                  onChangeText={setEmailAddress}
+                  style={styles.input}
+                  keyboardType="email-address"
+                  autoComplete="email"
+                />
+              </View>
 
-            <TouchableOpacity
-              style={[styles.signInButton, loading && styles.buttonDisabled]}
-              onPress={onSignInPress}
-              disabled={loading}
-            >
-              <Text style={styles.signInButtonText}>
-                {loading ? 'SIGNING IN...' : 'SIGN IN'}
-              </Text>
-            </TouchableOpacity>
+              <View style={styles.passwordHeader}>
+                <Text style={styles.inputLabel}>Password</Text>
+                <TouchableOpacity>
+                  <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.inputContainer}>
+                <Feather name="lock" size={18} color={theme.colors.outline} style={styles.inputIcon} />
+                <TextInput
+                  value={password}
+                  placeholder="••••••••"
+                  placeholderTextColor={theme.colors.outline}
+                  secureTextEntry={!showPassword}
+                  onChangeText={setPassword}
+                  style={styles.input}
+                  autoComplete="password"
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Feather name={showPassword ? "eye-off" : "eye"} size={18} color={theme.colors.outline} />
+                </TouchableOpacity>
+              </View>
 
-            <View style={styles.dividerContainer}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>or</Text>
-              <View style={styles.dividerLine} />
-            </View>
+              <TouchableOpacity
+                style={[styles.signInButton, loading && styles.buttonDisabled]}
+                onPress={onSignInPress}
+                disabled={loading}
+              >
+                <Text style={styles.signInButtonText}>
+                  {loading ? 'SIGNING IN...' : 'SIGN IN'}
+                </Text>
+              </TouchableOpacity>
 
-            <View style={styles.socialButtonsContainer}>
-              <TouchableOpacity style={styles.socialButton} onPress={onGooglePress}>
-                <Ionicons name="logo-google" size={16} color="#000" style={styles.socialIcon} />
-                <Text style={styles.socialButtonText}>Google</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity style={styles.socialButton} onPress={onApplePress}>
-                <Ionicons name="logo-apple" size={16} color="#000" style={styles.socialIcon} />
-                <Text style={styles.socialButtonText}>Apple</Text>
-              </TouchableOpacity>
+              <View style={styles.dividerContainer}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>or</Text>
+                <View style={styles.dividerLine} />
+              </View>
+
+              <View style={styles.socialButtonsContainer}>
+                <TouchableOpacity style={styles.socialButton} onPress={onGooglePress}>
+                  <Ionicons name="logo-google" size={16} color="#000" style={styles.socialIcon} />
+                  <Text style={styles.socialButtonText}>Google</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity style={styles.socialButton} onPress={onApplePress}>
+                  <Ionicons name="logo-apple" size={16} color="#000" style={styles.socialIcon} />
+                  <Text style={styles.socialButtonText}>Apple</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
 
@@ -177,6 +191,7 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F1EFEA',
   },
   scrollContent: {
     flexGrow: 1,
@@ -204,26 +219,26 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '600',
     color: theme.colors.onSurface,
-    fontFamily: theme.typography.fonts.primary,
+    fontFamily: theme.typography.fonts.display,
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
     color: theme.colors.onSurfaceVariant,
-    fontFamily: theme.typography.fonts.primary,
+    fontFamily: theme.typography.fonts.display,
     textAlign: 'center',
     lineHeight: 24,
   },
 
   // Card
   card: {
-    backgroundColor: 'rgba(245, 244, 240, 0.6)',
     borderRadius: 32,
     padding: 24,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.5)',
+    borderColor: 'rgba(255, 255, 255, 0.4)',
     ...theme.shadows.soft,
     marginBottom: 32,
+    overflow: 'hidden',
   },
   inputLabel: {
     fontSize: 13,
@@ -236,10 +251,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.05)',
+    borderColor: 'rgba(255, 255, 255, 0.5)',
     paddingHorizontal: 16,
     marginBottom: 20,
   },

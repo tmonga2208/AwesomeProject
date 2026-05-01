@@ -9,6 +9,16 @@ import { Platform } from 'react-native';
 export const typography = {
   fonts: {
     primary: Platform.select({
+      ios: 'Georgia',
+      android: 'serif',
+      default: 'serif',
+    }),
+    display: Platform.select({
+      ios: 'Georgia',
+      android: 'serif',
+      default: 'serif',
+    }),
+    secondary: Platform.select({
       ios: 'Manrope',
       android: 'Manrope',
       default: 'System',

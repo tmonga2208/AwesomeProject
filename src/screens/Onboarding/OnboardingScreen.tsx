@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  ScrollView,
+  Image,
+  ImageSourcePropType,
 } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, {
@@ -18,18 +19,24 @@ import Animated, {
 } from 'react-native-reanimated';
 import { theme } from '@/theme';
 import { springs } from '@/animations/springConfigs';
-import { starterHabits } from '@/utils/habitDefaults';
 import { storage, STORAGE_KEYS } from '../../services/storage';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProp } from '@/navigation/types';
 import Feather from 'react-native-vector-icons/Feather';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width, height } = Dimensions.get('window');
 const MAX_STEPS = 3;
 
 // ─── Onboarding slide data ───
-const slides = [
+interface OnboardingSlide {
+  title: string;
+  subtitle: string;
+  iconName?: string;
+  iconSet?: 'feather' | 'material';
+  image?: ImageSourcePropType;
+}
+
+const slides: OnboardingSlide[] = [
   {
     iconName: 'refresh-cw',
     iconSet: 'feather',
@@ -58,7 +65,6 @@ const OnboardingScreen = () => {
   const translateX = useSharedValue(0);
   const contextX = useSharedValue(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedHabits, setSelectedHabits] = useState<string[]>([]);
 
   const handleIndexChange = (newIndex: number) => {
     setCurrentIndex(newIndex);
@@ -105,20 +111,23 @@ const OnboardingScreen = () => {
     flex: 1,
   }));
 
-  const toggleHabit = (id: string) => {
-    setSelectedHabits((prev) =>
-      prev.includes(id) ? prev.filter((h) => h !== id) : [...prev, id],
-    );
-  };
-
   const completeOnboarding = async () => {
     storage.set(STORAGE_KEYS.ONBOARDING_DONE, true);
     navigation.replace('SignIn');
   };
 
-  // ─── Render icon for a slide ───
-  const renderSlideIcon = (slide: typeof slides[0]) => {
-    return <Feather name={slide.iconName} size={64} color={theme.colors.primary} />;
+  // ─── Render illustration (icon or image) ───
+  const renderIllustration = (slide: OnboardingSlide) => {
+    if (slide.image) {
+      return (
+        <Image
+          source={slide.image}
+          style={styles.illustrationImage}
+          resizeMode="contain"
+        />
+      );
+    }
+    return <Feather name={slide.iconName || 'help-circle'} size={64} color={theme.colors.primary} />;
   };
 
   // ─── Pagination dots ───
@@ -170,15 +179,18 @@ const OnboardingScreen = () => {
                   </Text>
                 </View>
 
-                {/* Illustration */}
-                <View style={styles.illustrationCard}>
-                  {renderSlideIcon(slide)}
-                </View>
+                {/* Center Content Section */}
+                <View style={styles.centerContent}>
+                  {/* Illustration */}
+                  <View style={styles.illustrationCard}>
+                    {renderIllustration(slide)}
+                  </View>
 
-                {/* Content */}
-                <View style={styles.contentSection}>
-                  <Text style={styles.title}>{slide.title}</Text>
-                  <Text style={styles.subtitle}>{slide.subtitle}</Text>
+                  {/* Content */}
+                  <View style={styles.contentSection}>
+                    <Text style={styles.title}>{slide.title}</Text>
+                    <Text style={styles.subtitle}>{slide.subtitle}</Text>
+                  </View>
                 </View>
 
                 {/* Action buttons */}
@@ -202,41 +214,7 @@ const OnboardingScreen = () => {
                     </>
                   ) : (
                     <>
-                      {/* Step 3 - habit selection */}
-                      <ScrollView
-                        style={styles.habitsScroll}
-                        contentContainerStyle={styles.habitsContainer}
-                        showsVerticalScrollIndicator={false}
-                      >
-                        {starterHabits.map((habit) => {
-                          const isSelected = selectedHabits.includes(habit.id);
-                          return (
-                            <TouchableOpacity
-                              key={habit.id}
-                              style={[
-                                styles.habitChip,
-                                isSelected && styles.habitChipSelected,
-                              ]}
-                              onPress={() => toggleHabit(habit.id)}
-                            >
-                              <MaterialCommunityIcons
-                                name={habit.iconName}
-                                size={18}
-                                color={isSelected ? theme.colors.onPrimary : theme.colors.onSurfaceVariant}
-                                style={{ marginRight: 8 }}
-                              />
-                              <Text
-                                style={[
-                                  styles.habitText,
-                                  isSelected && styles.habitTextSelected,
-                                ]}
-                              >
-                                {habit.name}
-                              </Text>
-                            </TouchableOpacity>
-                          );
-                        })}
-                      </ScrollView>
+                      <View style={{ height: 24 }} />
 
                       <TouchableOpacity
                         style={styles.primaryButton}
@@ -306,29 +284,41 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
 
+  // ─── Center Content ───
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  },
+
   // ─── Illustration ───
   illustrationCard: {
     width: '100%',
-    aspectRatio: 1,
-    backgroundColor: 'rgba(77, 97, 78, 0.08)',
-    borderRadius: 28,
+    aspectRatio: 1.2,
+    backgroundColor: 'rgba(77, 97, 78, 0.05)',
+    borderRadius: 32,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 32,
-    maxHeight: height * 0.35,
+    marginBottom: 40,
+    maxHeight: height * 0.3,
+    overflow: 'hidden',
+  },
+  illustrationImage: {
+    width: '80%',
+    height: '80%',
   },
 
   // ─── Content ───
   contentSection: {
     alignItems: 'center',
-    marginBottom: 'auto' as any,
     paddingHorizontal: 8,
   },
   title: {
     fontSize: 32,
     fontWeight: '700',
     color: theme.colors.onBackground,
-    fontFamily: theme.typography.fonts.primary,
+    fontFamily: theme.typography.fonts.display,
     textAlign: 'center',
     marginBottom: 12,
     letterSpacing: -0.5,
@@ -344,7 +334,6 @@ const styles = StyleSheet.create({
 
   // ─── Actions ───
   actionSection: {
-    marginTop: 'auto' as any,
     alignItems: 'center',
     gap: 12,
   },
@@ -371,43 +360,6 @@ const styles = StyleSheet.create({
     color: theme.colors.onSurfaceVariant,
     fontFamily: theme.typography.fonts.primary,
     letterSpacing: 1.5,
-  },
-
-  // ─── Habits (Step 3) ───
-  habitsScroll: {
-    maxHeight: 180,
-    width: '100%',
-    marginBottom: 8,
-  },
-  habitsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 10,
-    paddingVertical: 4,
-  },
-  habitChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(239, 238, 234, 0.9)',
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 9999,
-    borderWidth: 1,
-    borderColor: theme.colors.outlineVariant,
-  },
-  habitChipSelected: {
-    backgroundColor: theme.colors.primary,
-    borderColor: theme.colors.primary,
-  },
-  habitText: {
-    fontFamily: theme.typography.fonts.primary,
-    fontSize: 14,
-    fontWeight: '500',
-    color: theme.colors.onSurfaceVariant,
-  },
-  habitTextSelected: {
-    color: theme.colors.onPrimary,
   },
 
   // ─── Footer ───
