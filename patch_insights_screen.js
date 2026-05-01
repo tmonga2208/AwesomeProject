@@ -1,52 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
-import { theme } from '@/theme';
-import CalendarGrid from '@/components/CalendarGrid/CalendarGrid';
-import HeatmapRow from '@/components/HeatmapRow/HeatmapRow';
-import DayDetailSheet from '@/components/DayDetailSheet/DayDetailSheet';
-import { format, subDays } from 'date-fns';
-import { useStore } from '@/store';
+const fs = require('fs');
+const filePath = 'src/screens/Insights/InsightsScreen.tsx';
+let content = fs.readFileSync(filePath, 'utf8');
 
-const InsightsScreen = () => {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const { completions, habits } = useStore();
-
-  // Build calendar habit data from real completions (last 90 days)
-  const calendarHabitData = useMemo(() => {
-    const dateMap: Record<string, Set<string>> = {};
-    completions.forEach((c) => {
-      const dateStr = format(new Date(c.completedAt), 'yyyy-MM-dd');
-      if (!dateMap[dateStr]) dateMap[dateStr] = new Set();
-      dateMap[dateStr].add(c.habitId);
-    });
-
-    // Map habit IDs to their colors
-    const habitColorMap: Record<string, string> = {};
-    habits.forEach((h) => {
-      habitColorMap[h.id] = h.color || theme.colors.primary;
-    });
-
-    return Object.entries(dateMap).map(([date, habitIds]) => ({
-      date,
-      colors: Array.from(habitIds).map((id) => habitColorMap[id] || theme.colors.primary),
-    }));
-  }, [completions, habits]);
-
-  // Build heatmap data from real completions (last 365 days)
-  const heatmapData = useMemo(() => {
-    const dateMap: Record<string, number> = {};
-    completions.forEach((c) => {
-      const dateStr = format(new Date(c.completedAt), 'yyyy-MM-dd');
-      dateMap[dateStr] = (dateMap[dateStr] || 0) + 1;
-    });
-
-    return Array.from({ length: 365 }).map((_, i) => ({
-      date: format(subDays(new Date(), i), 'yyyy-MM-dd'),
-      count: dateMap[format(subDays(new Date(), i), 'yyyy-MM-dd')] || 0,
-    }));
-  }, [completions]);
-
-    return (
+// Replace the render to include AI insights
+const newRender = `  return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
@@ -85,10 +42,12 @@ const InsightsScreen = () => {
 
       <DayDetailSheet date={selectedDate} onClose={() => setSelectedDate(null)} />
     </SafeAreaView>
-  );
-};
+  );`;
 
-const styles = StyleSheet.create({
+content = content.replace(/return \([\s\S]*?\);\n};/, newRender + '\n};');
+
+// Replace the styles
+const newStyles = `const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -169,6 +128,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.fonts.primary,
     textAlign: 'center',
   },
-});
+});`;
 
-export default InsightsScreen;
+content = content.replace(/const styles = StyleSheet\.create\(\{[\s\S]*\}\);/, newStyles);
+fs.writeFileSync(filePath, content);

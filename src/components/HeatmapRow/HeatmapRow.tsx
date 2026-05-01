@@ -115,7 +115,7 @@ const HeatmapRow: React.FC<HeatmapRowProps> = ({
                   y={rowIdx * (cellSize + cellSpacing)}
                   width={cellSize}
                   height={cellSize}
-                  rx={3} // rounded corners
+                  rx={4} // rounded corners
                   fill={baseColor}
                   fillOpacity={cell.opacity}
                 />

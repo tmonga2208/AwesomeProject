@@ -171,11 +171,11 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({ onDayPress, habitData = [] 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: theme.colors.surfaceVariant,
-    borderRadius: theme.radius.lg,
-    padding: 16,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radius.xl,
+    padding: 24,
     borderWidth: 1,
-    borderColor: theme.colors.outlineVariant,
+    borderColor: 'rgba(0,0,0,0.03)',
     ...theme.shadows.soft,
     overflow: 'hidden',
   },
@@ -183,13 +183,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 24,
   },
   monthText: {
-    fontSize: theme.typography.sizes.h3,
+    fontSize: theme.typography.sizes.h2,
     fontWeight: theme.typography.weights.semibold,
     color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
+    letterSpacing: theme.typography.letterSpacings.h2,
   },
   iconButton: {
     padding: 8,
@@ -197,20 +198,21 @@ const styles = StyleSheet.create({
   daysOfWeek: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 8,
+    marginBottom: 16,
   },
   dayOfWeekText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: theme.typography.sizes.caption,
+    fontWeight: theme.typography.weights.bold,
     color: theme.colors.outline,
     fontFamily: theme.typography.fonts.primary,
     width: '14%',
     textAlign: 'center',
+    letterSpacing: theme.typography.letterSpacings.labelCaps,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   cell: {
     width: '14%',
@@ -219,11 +221,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dayContainer: {
-    width: 36,
-    height: 36,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 18,
+    borderRadius: 20,
   },
   todayContainer: {
     backgroundColor: theme.colors.primaryContainer,
@@ -232,7 +234,7 @@ const styles = StyleSheet.create({
     opacity: 0.3,
   },
   dayText: {
-    fontSize: theme.typography.sizes.bodySm,
+    fontSize: theme.typography.sizes.bodyMd,
     color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
   },
@@ -246,8 +248,8 @@ const styles = StyleSheet.create({
   dotsContainer: {
     flexDirection: 'row',
     position: 'absolute',
-    bottom: 2,
-    gap: 2,
+    bottom: 4,
+    gap: 3,
   },
   dot: {
     width: 4,
