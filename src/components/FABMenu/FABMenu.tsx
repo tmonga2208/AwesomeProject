@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   fab: {
     width: 64,
     height: 64,
-    borderRadius: 32,
+    borderRadius: theme.radius.full,
     backgroundColor: theme.colors.primary,
     justifyContent: 'center',
     alignItems: 'center',

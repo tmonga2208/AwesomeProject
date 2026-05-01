@@ -1,7 +1,7 @@
 /**
  * Aura Design System — Spacing & Radius
  *
- * Consistent 32px for large cards, 16px for smaller elements.
+ * The layout follows a Fluid Grid with fixed outer margins. The 8px linear scale ensures consistent rhythm across all components.
  */
 export const spacing = {
   xs: 4,
@@ -19,12 +19,12 @@ export const spacing = {
 };
 
 export const radius = {
-  sm: 8,
-  default: 12,
-  md: 16,       // Small elements, buttons, inputs
-  lg: 24,       // Medium cards
-  xl: 32,       // Large cards, modals
-  full: 9999,
+  sm: 4,        // 0.25rem
+  default: 8,   // 0.5rem
+  md: 12,       // 0.75rem
+  lg: 16,       // 1rem
+  xl: 24,       // 1.5rem
+  full: 9999,   // Buttons & Chips
 };
 
 export type Spacing = typeof spacing;

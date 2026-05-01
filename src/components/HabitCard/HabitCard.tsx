@@ -66,20 +66,20 @@ const HabitCard: React.FC<HabitCardProps> = React.memo(({ habit, isCompleted = f
 const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.radius.lg,
+    borderRadius: theme.radius.xl,
     padding: 16,
     marginBottom: 16,
     ...theme.shadows.soft,
     borderWidth: 1,
-    borderColor: theme.colors.outlineVariant,
+    borderColor: 'rgba(0,0,0,0.03)', // subtle inner border
   },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   iconWrapper: {
-    width: 52,
-    height: 52,
+    width: 48,
+    height: 48,
     borderRadius: theme.radius.md,
     justifyContent: 'center',
     alignItems: 'center',
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     fontWeight: theme.typography.weights.semibold,
     color: theme.colors.onSurface,
     marginBottom: 4,
+    letterSpacing: theme.typography.letterSpacings.bodyMd,
   },
   subtitleRow: {
     flexDirection: 'row',
@@ -102,15 +103,15 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontFamily: theme.typography.fonts.primary,
-    fontSize: 10,
+    fontSize: theme.typography.sizes.caption,
     fontWeight: theme.typography.weights.semibold,
     color: theme.colors.outline,
     letterSpacing: 0.5,
   },
   actionButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: theme.radius.full,
     borderWidth: 1.5,
     borderColor: theme.colors.outlineVariant,
     justifyContent: 'center',
@@ -118,9 +119,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.surface,
   },
   completedButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 48,
+    height: 48,
+    borderRadius: theme.radius.full,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.primary,
