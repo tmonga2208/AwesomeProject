@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { theme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import HeatmapRow from '@/components/HeatmapRow/HeatmapRow';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -12,6 +12,7 @@ import { Completion } from '@/types/completion';
 import { format, subDays } from 'date-fns';
 
 const HabitDetailScreen = () => {
+  const { colors } = useTheme();
   const route = useRoute();
   const navigation = useNavigation();
   const { habitId } = (route.params as any) || { habitId: 'unknown' };
@@ -76,61 +77,61 @@ const HabitDetailScreen = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.header, { borderBottomColor: colors.outlineVariant }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Feather name="arrow-left" size={20} color={theme.colors.primary} />
+          <Feather name="arrow-left" size={20} color={colors.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Habit Detail</Text>
+        <Text style={[styles.headerTitle, { color: colors.onBackground }]}>Habit Detail</Text>
         <View style={{ width: 60 }} />
       </View>
 
       <View style={styles.content}>
-        <View style={styles.habitInfoCard}>
+        <View style={[styles.habitInfoCard, { backgroundColor: colors.surfaceVariant }]}>
           <MaterialCommunityIcons 
             name={habit?.iconName || habit?.icon || 'star-outline'} 
             size={48} 
-            color={theme.colors.primary} 
+            color={colors.primary} 
           />
-          <Text style={styles.habitName}>{habit?.name || 'Unknown Habit'}</Text>
-          <Text style={styles.habitStreak}>
+          <Text style={[styles.habitName, { color: colors.onSurface }]}>{habit?.name || 'Unknown Habit'}</Text>
+          <Text style={[styles.habitStreak, { color: colors.onSurfaceVariant }]}>
             {currentStreak > 0 ? `Current Streak: ${currentStreak} Days 🔥` : 'No streak yet'}
           </Text>
         </View>
 
-        <Text style={styles.sectionTitle}>Completion History</Text>
-        <View style={styles.chartContainer}>
-          <HeatmapRow data={heatmapData} weeks={12} baseColor={theme.colors.primary} />
+        <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>Completion History</Text>
+        <View style={[styles.chartContainer, { backgroundColor: colors.surface, borderColor: colors.outlineVariant }]}>
+          <HeatmapRow data={heatmapData} weeks={12} baseColor={colors.primary} />
         </View>
 
-        <Text style={styles.sectionTitle}>Recent Completions</Text>
+        <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>Recent Completions</Text>
         <View style={styles.completionList}>
           {recentCompletions.length > 0 ? (
             recentCompletions.map((c) => (
-              <View key={c.id} style={styles.completionItem}>
-                <Text style={styles.completionDate}>
+              <View key={c.id} style={[styles.completionItem, { backgroundColor: colors.surface, borderColor: colors.outlineVariant }]}>
+                <Text style={[styles.completionDate, { color: colors.onSurfaceVariant }]}>
                   {format(new Date(c.completedAt), 'MMM d, h:mm a')}
                 </Text>
                 {c.memo ? (
-                  <Text style={styles.completionMemo}>"{c.memo}"</Text>
+                  <Text style={[styles.completionMemo, { color: colors.onSurface }]}>"{c.memo}"</Text>
                 ) : c.value ? (
-                  <Text style={styles.completionMemo}>
+                  <Text style={[styles.completionMemo, { color: colors.onSurface }]}>
                     {c.value} {habit?.targetUnit || 'completed'}
                   </Text>
                 ) : null}
               </View>
             ))
           ) : (
-            <View style={styles.completionItem}>
-              <Text style={styles.completionDate}>No completions yet</Text>
-              <Text style={styles.completionMemo}>Complete this habit to see your history!</Text>
+            <View style={[styles.completionItem, { backgroundColor: colors.surface, borderColor: colors.outlineVariant }]}>
+              <Text style={[styles.completionDate, { color: colors.onSurfaceVariant }]}>No completions yet</Text>
+              <Text style={[styles.completionMemo, { color: colors.onSurface }]}>Complete this habit to see your history!</Text>
             </View>
           )}
         </View>
@@ -142,7 +143,6 @@ const HabitDetailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   header: {
     flexDirection: 'row',
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.outlineVariant,
   },
   backButton: {
     padding: theme.spacing.sm,
@@ -160,14 +159,12 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.h3,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.onBackground,
   },
   content: {
     flex: 1,
     padding: theme.spacing.containerPadding,
   },
   habitInfoCard: {
-    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: theme.radius.lg,
     padding: theme.spacing.lg,
     alignItems: 'center',
@@ -177,26 +174,21 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.h2,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.onSurface,
     marginTop: theme.spacing.sm,
     marginBottom: theme.spacing.xs,
   },
   habitStreak: {
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.bodyMd,
-    color: theme.colors.onSurfaceVariant,
   },
   sectionTitle: {
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.h3,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.onSurface,
     marginBottom: theme.spacing.md,
   },
   chartContainer: {
-    backgroundColor: theme.colors.surface,
     borderWidth: 1,
-    borderColor: theme.colors.outlineVariant,
     borderRadius: theme.radius.md,
     paddingVertical: theme.spacing.md,
     paddingLeft: theme.spacing.md,
@@ -206,23 +198,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   completionItem: {
-    backgroundColor: theme.colors.surface,
     padding: theme.spacing.md,
     borderRadius: theme.radius.md,
     marginBottom: theme.spacing.sm,
     borderWidth: 1,
-    borderColor: theme.colors.outlineVariant,
   },
   completionDate: {
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.bodySm,
-    color: theme.colors.onSurfaceVariant,
     marginBottom: 2,
   },
   completionMemo: {
     fontFamily: theme.typography.fonts.primary,
     fontSize: theme.typography.sizes.bodyMd,
-    color: theme.colors.onSurface,
     fontStyle: 'italic',
   },
 });

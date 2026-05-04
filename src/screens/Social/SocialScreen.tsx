@@ -5,7 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SocialStackParamList } from '@/navigation/SocialStack';
 import FastImage from 'react-native-fast-image';
 import Feather from 'react-native-vector-icons/Feather';
-import { theme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import { useStore } from '@/store';
 import { useAuthStore } from '@/store/authStore';
 import * as userService from '@/services/userService';
@@ -14,6 +14,7 @@ import { UserProfile } from '@/types/user';
 type NavigationProp = NativeStackNavigationProp<SocialStackParamList, 'Social'>;
 
 const SocialScreen = () => {
+  const { colors, isDark } = useTheme();
   const navigation = useNavigation<NavigationProp>();
   const { user } = useAuthStore();
   const {
@@ -46,11 +47,11 @@ const SocialScreen = () => {
   const avatarUrl = friendProfiles.length > 0 ? user?.photoURL : 'https://i.pravatar.cc/150?u=me';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={styles.header}>
-        <Feather name="wind" size={24} color={theme.colors.primary} />
-        <Text style={styles.headerTitle}>Ethos</Text>
+        <Feather name="wind" size={24} color={colors.primary} />
+        <Text style={[styles.headerTitle, { color: colors.primary }]}>Ethos</Text>
         <FastImage
           source={{ uri: user?.photoURL || 'https://i.pravatar.cc/150?u=me' }}
           style={styles.headerAvatar}
@@ -60,56 +61,56 @@ const SocialScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
         {/* Search */}
-        <View style={styles.searchContainer}>
-          <Feather name="search" size={20} color={theme.colors.outline} style={styles.searchIcon} />
+        <View style={[styles.searchContainer, { backgroundColor: colors.surface }]}>
+          <Feather name="search" size={20} color={colors.outline} style={styles.searchIcon} />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: colors.onSurface }]}
             placeholder="Find friends..."
-            placeholderTextColor={theme.colors.outline}
+            placeholderTextColor={colors.outline}
           />
         </View>
 
         {/* Global Leaderboard Button */}
         <TouchableOpacity 
-          style={styles.leaderboardBtn}
+          style={[styles.leaderboardBtn, { backgroundColor: colors.surfaceVariant, borderColor: colors.outlineVariant }]}
           onPress={() => navigation.navigate('Leaderboard')}
         >
-          <View style={styles.leaderboardIconContainer}>
-            <Feather name="award" size={20} color={theme.colors.primary} />
+          <View style={[styles.leaderboardIconContainer, { backgroundColor: colors.primaryContainer }]}>
+            <Feather name="award" size={20} color={colors.primary} />
           </View>
-          <Text style={styles.leaderboardText}>Global Leaderboard</Text>
-          <Feather name="chevron-right" size={20} color={theme.colors.outline} />
+          <Text style={[styles.leaderboardText, { color: colors.onSurface }]}>Global Leaderboard</Text>
+          <Feather name="chevron-right" size={20} color={colors.outline} />
         </TouchableOpacity>
 
         {/* Friend Requests */}
         {friendRequests.length > 0 && (
           <>
-            <Text style={styles.sectionHeader}>FRIEND REQUESTS</Text>
+            <Text style={[styles.sectionHeader, { color: colors.outline }]}>FRIEND REQUESTS</Text>
             {friendRequests.map((req) => {
               const otherUid = req.users.find((u) => u !== user?.uid) || '';
               const profile = requestProfiles[otherUid];
               return (
-                <View key={req.id} style={styles.requestCard}>
+                <View key={req.id} style={[styles.requestCard, { backgroundColor: colors.surface }]}>
                   <FastImage
                     source={{ uri: profile?.avatarUrl || `https://i.pravatar.cc/150?u=${otherUid}` }}
                     style={styles.avatarLarge}
                   />
                   <View style={styles.requestInfo}>
-                    <Text style={styles.requestName}>{profile?.displayName || 'Unknown'}</Text>
-                    <Text style={styles.requestMutual}>Wants to connect</Text>
+                    <Text style={[styles.requestName, { color: colors.onSurface }]}>{profile?.displayName || 'Unknown'}</Text>
+                    <Text style={[styles.requestMutual, { color: colors.outline }]}>Wants to connect</Text>
                   </View>
                   <View style={styles.requestActions}>
                     <TouchableOpacity
-                      style={styles.rejectBtn}
+                      style={[styles.rejectBtn, { backgroundColor: colors.surfaceVariant }]}
                       onPress={() => rejectFriendRequest(req.id)}
                     >
-                      <Feather name="x" size={20} color={theme.colors.onSurface} />
+                      <Feather name="x" size={20} color={colors.onSurface} />
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={styles.acceptBtn}
+                      style={[styles.acceptBtn, { backgroundColor: colors.primary }]}
                       onPress={() => acceptFriendRequest(req.id)}
                     >
-                      <Feather name="check" size={20} color={theme.colors.onPrimary} />
+                      <Feather name="check" size={20} color={colors.onPrimary} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -120,51 +121,51 @@ const SocialScreen = () => {
 
         {/* Ritual Circles / Feed */}
         <View style={styles.sectionHeaderRow}>
-          <Text style={styles.sectionHeader}>RITUAL CIRCLES</Text>
+          <Text style={[styles.sectionHeader, { color: colors.outline }]}>RITUAL CIRCLES</Text>
           <TouchableOpacity>
-            <Text style={styles.filterText}>Filter</Text>
+            <Text style={[styles.filterText, { color: colors.primary }]}>Filter</Text>
           </TouchableOpacity>
         </View>
 
         {feed.length > 0 ? (
           feed.map((item) => (
-            <View key={item.id} style={styles.feedCard}>
+            <View key={item.id} style={[styles.feedCard, { backgroundColor: colors.surface }]}>
               <View style={styles.feedHeader}>
                 <FastImage
                   source={{ uri: item.fromAvatar || `https://i.pravatar.cc/150?u=${item.fromUid}` }}
                   style={styles.avatarMedium}
                 />
                 <View style={styles.feedUserInfo}>
-                  <Text style={styles.feedName}>{item.fromName}</Text>
+                  <Text style={[styles.feedName, { color: colors.onSurface }]}>{item.fromName}</Text>
                   <View style={styles.streakBadge}>
-                    <Feather name="zap" size={12} color={theme.colors.primary} />
-                    <Text style={styles.streakText}>{item.streak} Day Streak</Text>
+                    <Feather name="zap" size={12} color={colors.primary} />
+                    <Text style={[styles.streakText, { color: colors.primary }]}>{item.streak} Day Streak</Text>
                   </View>
                 </View>
-                <Text style={styles.timeAgo}>
+                <Text style={[styles.timeAgo, { color: colors.outline }]}>
                   {getTimeAgo(item.timestamp)}
                 </Text>
               </View>
-              <View style={styles.activityBox}>
-                <View style={styles.activityIconWrapper}>
-                  <Feather name={item.habitIcon || 'check-circle'} size={16} color={theme.colors.primary} />
+              <View style={[styles.activityBox, { backgroundColor: colors.surfaceVariant }]}>
+                <View style={[styles.activityIconWrapper, { backgroundColor: colors.primaryContainer }]}>
+                  <Feather name={item.habitIcon || 'check-circle'} size={16} color={colors.primary} />
                 </View>
                 <View>
-                  <Text style={styles.activityLabel}>JUST FINISHED</Text>
-                  <Text style={styles.activityName}>{item.habitName}</Text>
+                  <Text style={[styles.activityLabel, { color: colors.outline }]}>JUST FINISHED</Text>
+                  <Text style={[styles.activityName, { color: colors.onSurface }]}>{item.habitName}</Text>
                 </View>
               </View>
             </View>
           ))
         ) : (
-          <View style={styles.feedCard}>
-            <View style={styles.activityBox}>
-              <View style={styles.activityIconWrapper}>
-                <Feather name="users" size={16} color={theme.colors.primary} />
+          <View style={[styles.feedCard, { backgroundColor: colors.surface }]}>
+            <View style={[styles.activityBox, { backgroundColor: colors.surfaceVariant }]}>
+              <View style={[styles.activityIconWrapper, { backgroundColor: colors.primaryContainer }]}>
+                <Feather name="users" size={16} color={colors.primary} />
               </View>
               <View>
-                <Text style={styles.activityLabel}>NO ACTIVITY YET</Text>
-                <Text style={styles.activityName}>Add friends to see their rituals!</Text>
+                <Text style={[styles.activityLabel, { color: colors.outline }]}>NO ACTIVITY YET</Text>
+                <Text style={[styles.activityName, { color: colors.onSurface }]}>Add friends to see their rituals!</Text>
               </View>
             </View>
           </View>
@@ -188,7 +189,6 @@ const getTimeAgo = (timestamp: number): string => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   header: {
     flexDirection: 'row',
@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.primary,
     fontFamily: theme.typography.fonts.primary,
     letterSpacing: 1,
   },
@@ -216,7 +215,6 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.md,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -230,23 +228,19 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: theme.typography.sizes.bodyMd,
     fontFamily: theme.typography.fonts.primary,
-    color: theme.colors.onSurface,
   },
   leaderboardBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: theme.radius.md,
     padding: 16,
     marginBottom: 32,
     borderWidth: 1,
-    borderColor: theme.colors.outlineVariant,
   },
   leaderboardIconContainer: {
     width: 40,
     height: 40,
     borderRadius: theme.radius.default,
-    backgroundColor: theme.colors.primaryContainer,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -255,7 +249,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: theme.typography.sizes.h3,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
   },
   sectionHeaderRow: {
@@ -268,21 +261,18 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: theme.typography.sizes.labelCaps,
     fontWeight: theme.typography.weights.bold,
-    color: theme.colors.outline,
     letterSpacing: theme.typography.letterSpacings.labelCaps,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: 12,
   },
   filterText: {
     fontSize: theme.typography.sizes.bodySm,
-    color: theme.colors.primary,
     fontWeight: theme.typography.weights.medium,
     fontFamily: theme.typography.fonts.primary,
   },
   requestCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.lg,
     padding: 16,
     marginBottom: 24,
@@ -300,13 +290,11 @@ const styles = StyleSheet.create({
   requestName: {
     fontSize: theme.typography.sizes.h3,
     fontWeight: theme.typography.weights.medium,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: 4,
   },
   requestMutual: {
     fontSize: theme.typography.sizes.caption,
-    color: theme.colors.outline,
     fontFamily: theme.typography.fonts.primary,
   },
   requestActions: {
@@ -318,7 +306,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.surfaceVariant,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -326,12 +313,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },
   feedCard: {
-    backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.lg,
     padding: 20,
     marginBottom: 16,
@@ -354,7 +339,6 @@ const styles = StyleSheet.create({
   feedName: {
     fontSize: theme.typography.sizes.h3,
     fontWeight: theme.typography.weights.medium,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: 4,
   },
@@ -364,19 +348,16 @@ const styles = StyleSheet.create({
   },
   streakText: {
     fontSize: theme.typography.sizes.caption,
-    color: theme.colors.primary,
     fontFamily: theme.typography.fonts.primary,
     marginLeft: 4,
   },
   timeAgo: {
     fontSize: theme.typography.sizes.caption,
-    color: theme.colors.outline,
     fontFamily: theme.typography.fonts.primary,
   },
   activityBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: theme.radius.md,
     padding: 16,
   },
@@ -384,7 +365,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: theme.colors.primaryContainer,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -392,14 +372,12 @@ const styles = StyleSheet.create({
   activityLabel: {
     fontSize: 10,
     fontWeight: theme.typography.weights.bold,
-    color: theme.colors.outline,
     letterSpacing: theme.typography.letterSpacings.labelCaps,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: 2,
   },
   activityName: {
     fontSize: theme.typography.sizes.bodySm,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
   },
 });

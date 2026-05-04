@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
-import { theme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import CalendarGrid from '@/components/CalendarGrid/CalendarGrid';
 import HeatmapRow from '@/components/HeatmapRow/HeatmapRow';
 import DayDetailSheet from '@/components/DayDetailSheet/DayDetailSheet';
@@ -8,6 +8,7 @@ import { format, subDays } from 'date-fns';
 import { useStore } from '@/store';
 
 const InsightsScreen = () => {
+  const { colors, isDark } = useTheme();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const { completions, habits } = useStore();
 
@@ -23,14 +24,14 @@ const InsightsScreen = () => {
     // Map habit IDs to their colors
     const habitColorMap: Record<string, string> = {};
     habits.forEach((h) => {
-      habitColorMap[h.id] = h.color || theme.colors.primary;
+      habitColorMap[h.id] = h.color || colors.primary;
     });
 
     return Object.entries(dateMap).map(([date, habitIds]) => ({
       date,
-      colors: Array.from(habitIds).map((id) => habitColorMap[id] || theme.colors.primary),
+      colors: Array.from(habitIds).map((id) => habitColorMap[id] || colors.primary),
     }));
-  }, [completions, habits]);
+  }, [completions, habits, colors.primary]);
 
   // Build heatmap data from real completions (last 365 days)
   const heatmapData = useMemo(() => {
@@ -47,38 +48,38 @@ const InsightsScreen = () => {
   }, [completions]);
 
     return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
-          <Text style={styles.title}>Insights</Text>
+          <Text style={[styles.title, { color: colors.onSurface }]}>Insights</Text>
         </View>
 
         <View style={styles.section}>
-          <View style={styles.aiCard}>
+          <View style={[styles.aiCard, { backgroundColor: colors.surface, borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)' }]}>
             <View style={styles.aiHeader}>
-              <Text style={styles.aiTitle}>AI Insights</Text>
-              <Text style={styles.aiBadge}>✨ Serene AI</Text>
+              <Text style={[styles.aiTitle, { color: colors.primary }]}>AI Insights</Text>
+              <Text style={[styles.aiBadge, { color: colors.primary, backgroundColor: colors.primaryContainer }]}>✨ Serene AI</Text>
             </View>
-            <Text style={styles.aiBody}>
+            <Text style={[styles.aiBody, { color: colors.onSurfaceVariant }]}>
               You're building incredible momentum. Your "Morning Meditation" habit is your most consistent anchor, completed 14 days in a row. Consider pairing it with "Journaling" to stack these positive behaviors.
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Monthly Consistency</Text>
+          <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>Monthly Consistency</Text>
           <CalendarGrid onDayPress={setSelectedDate} habitData={calendarHabitData} />
           {selectedDate && (
-            <Text style={styles.selectedDateText}>
+            <Text style={[styles.selectedDateText, { color: colors.onSurfaceVariant }]}>
               Selected: {format(selectedDate, 'MMM do, yyyy')}
             </Text>
           )}
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Year in Review</Text>
-          <View style={styles.heatmapCard}>
-            <HeatmapRow data={heatmapData} weeks={52} baseColor={theme.colors.primary} />
+          <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>Year in Review</Text>
+          <View style={[styles.heatmapCard, { backgroundColor: colors.surface, borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)' }]}>
+            <HeatmapRow data={heatmapData} weeks={52} baseColor={colors.primary} />
           </View>
         </View>
       </ScrollView>
@@ -91,7 +92,6 @@ const InsightsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   scrollContent: {
     padding: theme.spacing.containerPadding,
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: theme.typography.sizes.h1,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     letterSpacing: theme.typography.letterSpacings.h1,
   },
@@ -113,17 +112,14 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: theme.typography.sizes.h2,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: theme.spacing.md,
     letterSpacing: theme.typography.letterSpacings.h2,
   },
   aiCard: {
-    backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.xl,
     padding: 24,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.03)',
     ...theme.shadows.soft,
   },
   aiHeader: {
@@ -135,14 +131,11 @@ const styles = StyleSheet.create({
   aiTitle: {
     fontSize: theme.typography.sizes.h3,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.primary,
     fontFamily: theme.typography.fonts.primary,
   },
   aiBadge: {
     fontSize: theme.typography.sizes.caption,
     fontWeight: theme.typography.weights.bold,
-    color: theme.colors.primary,
-    backgroundColor: theme.colors.primaryContainer,
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: theme.radius.full,
@@ -151,21 +144,17 @@ const styles = StyleSheet.create({
   aiBody: {
     fontSize: theme.typography.sizes.bodyMd,
     lineHeight: theme.typography.lineHeights.bodyLg,
-    color: theme.colors.onSurfaceVariant,
     fontFamily: theme.typography.fonts.primary,
   },
   heatmapCard: {
-    backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.xl,
     padding: 24,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.03)',
     ...theme.shadows.soft,
   },
   selectedDateText: {
     marginTop: theme.spacing.md,
     fontSize: theme.typography.sizes.bodyMd,
-    color: theme.colors.onSurfaceVariant,
     fontFamily: theme.typography.fonts.primary,
     textAlign: 'center',
   },

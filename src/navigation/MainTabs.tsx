@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { MainTabParamList } from './types';
 import HabitsStack from './HabitsStack';
+import { useTheme } from '@/theme';
 import { theme } from '@/theme';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,8 +14,16 @@ import SettingsStack from './SettingsStack';
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+  const { colors, isDark } = useTheme();
+
   return (
-    <View style={styles.tabBarContainer}>
+    <View style={[
+      styles.tabBarContainer,
+      {
+        backgroundColor: colors.surface,
+        borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)',
+      },
+    ]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -61,13 +70,20 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
             style={styles.tabItem}
             activeOpacity={0.8}
           >
-            <View style={[styles.tabContent, isFocused && styles.tabContentActive]}>
+            <View style={[
+              styles.tabContent,
+              isFocused && { backgroundColor: colors.primaryContainer },
+            ]}>
               <IconComponent 
                 name={iconName} 
                 size={20} 
-                color={isFocused ? theme.colors.primary : theme.colors.outline} 
+                color={isFocused ? colors.primary : colors.outline} 
               />
-              <Text style={[styles.tabLabel, isFocused && styles.tabLabelActive]}>
+              <Text style={[
+                styles.tabLabel,
+                { color: colors.outline },
+                isFocused && { color: colors.onPrimaryContainer },
+              ]}>
                 {route.name.toUpperCase()}
               </Text>
             </View>
@@ -97,11 +113,9 @@ const MainTabs = () => {
 const styles = StyleSheet.create({
   tabBarContainer: {
     flexDirection: 'row',
-    backgroundColor: theme.colors.surface,
     paddingBottom: Platform.OS === 'ios' ? 32 : 24,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.03)',
     ...theme.shadows.glass,
     elevation: 10,
   },
@@ -119,18 +133,11 @@ const styles = StyleSheet.create({
     borderRadius: theme.radius.full,
     gap: 4,
   },
-  tabContentActive: {
-    backgroundColor: theme.colors.primaryContainer,
-  },
   tabLabel: {
     fontSize: 10,
     fontWeight: theme.typography.weights.bold,
     fontFamily: theme.typography.fonts.primary,
-    color: theme.colors.outline,
     letterSpacing: 0.5,
-  },
-  tabLabelActive: {
-    color: theme.colors.onPrimaryContainer,
   },
 });
 

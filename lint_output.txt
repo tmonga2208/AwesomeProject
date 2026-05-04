@@ -1,0 +1,153 @@
+
+> AwesomeProject@0.0.1 lint
+> eslint .
+
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/App.tsx
+  70:6   error    React Hook useEffect has missing dependencies: 'subscribeCompletions', 'subscribeHabits', 'subscribeProfile', 'subscribeSocial', 'unsubscribeCompletions', 'unsubscribeHabits', 'unsubscribeProfile', and 'unsubscribeSocial'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  73:36  warning  Inline style: { flex: 1 }                                                                                                                                                                                                                                                          react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/metro.config.js
+  1:7  warning  'path' is assigned a value but never used  no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/ActivityRing/ActivityRing.tsx
+  2:16  error  'StyleSheet' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/CalendarGrid/CalendarGrid.tsx
+   11:3  error  'isSameDay' is defined but never used                                                                                                      @typescript-eslint/no-unused-vars
+  101:6  error  React Hook useMemo has missing dependencies: 'endDate', 'monthStart', and 'startDate'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/CreateHabitBottomSheet/CreateHabitBottomSheet.tsx
+  2:34  error  'TouchableOpacity' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/DayDetailSheet/DayDetailSheet.tsx
+   15:16  error    'height' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   93:28  warning  Inline style: { marginRight: 12 }            react-native/no-inline-styles
+  108:46  warning  Inline style: { marginTop: 24 }              react-native/no-inline-styles
+  117:26  warning  Inline style: { marginRight: 12 }            react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/FABMenu/FABMenu.tsx
+   7:3   error  'withDelay' is defined but never used                                                                                                                                                                                                                          @typescript-eslint/no-unused-vars
+  39:12  error  React Hook "useAnimatedStyle" is called in function "createItemStyle" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use"  react-hooks/rules-of-hooks
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/FriendCard/FriendCard.tsx
+  85:53  error  'spacing' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/HabitCard/HabitCard.tsx
+   4:10  error    'theme' is defined but never used  @typescript-eslint/no-unused-vars
+  43:79  warning  Inline style: { marginRight: 4 }   react-native/no-inline-styles
+  48:96  warning  Inline style: { marginRight: 4 }   react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/HeatmapRow/HeatmapRow.tsx
+  2:10  error  'View' is defined but never used         @typescript-eslint/no-unused-vars
+  2:40  error  'Dimensions' is defined but never used   @typescript-eslint/no-unused-vars
+  4:27  error  'startOfWeek' is defined but never used  @typescript-eslint/no-unused-vars
+  4:70  error  'isSameMonth' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/components/IconPickerModal/IconPickerModal.tsx
+   17:19  error    'isDark' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  108:44  warning  Inline style: { borderWidth: 1.5 }           react-native/no-inline-styles
+  130:44  warning  Inline style: { borderWidth: 1.5 }           react-native/no-inline-styles
+  142:24  warning  Inline style: { height: 100 }                react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/navigation/MainTabs.tsx
+   22:7   warning  Inline style: {
+  borderTopColor: "isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'"
+}                                                                                                                                                                                                                                                                                                                           react-native/no-inline-styles
+  100:15  warning  Do not define components during render. React will see a new component type on every render and destroy the entire subtree’s DOM nodes and state (https://reactjs.org/docs/reconciliation.html#elements-of-different-types). Instead, move this component definition out of the parent component “MainTabs” and pass data as props. If you want to allow component creation in props, set allowAsProps option to true  react/no-unstable-nested-components
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/navigation/types.ts
+  3:10  error  'CompositeNavigationProp' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Auth/SignInScreen.tsx
+   75:28  warning  Inline style: { flex: 1, backgroundColor: 'transparent' }  react-native/no-inline-styles
+   93:52  warning  Inline style: { borderRadius: 32, overflow: 'hidden' }     react-native/no-inline-styles
+  105:26  warning  Inline style: { position: 'relative', zIndex: 1 }          react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Auth/SignUpScreen.tsx
+   85:28  warning  Inline style: { flex: 1, backgroundColor: 'transparent' }  react-native/no-inline-styles
+  103:52  warning  Inline style: { borderRadius: 32, overflow: 'hidden' }     react-native/no-inline-styles
+  115:26  warning  Inline style: { position: 'relative', zIndex: 1 }          react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Auth/WelcomeScreen.tsx
+  29:46  warning  Inline style: { backgroundColor: 'transparent' }        react-native/no-inline-styles
+  43:50  warning  Inline style: { borderRadius: 32, overflow: 'hidden' }  react-native/no-inline-styles
+  55:24  warning  Inline style: { position: 'relative', zIndex: 1 }       react-native/no-inline-styles
+  58:48  warning  Inline style: { color: '#FFF' }                         react-native/no-inline-styles
+  63:48  warning  Inline style: { color: '#000' }                         react-native/no-inline-styles
+  77:48  warning  Inline style: { color: '#FFF' }                         react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/CreateHabit/CreateHabitScreen.tsx
+   25:19  error    'isDark' is assigned a value but never used                                                                       @typescript-eslint/no-unused-vars
+  159:50  warning  Inline style: {
+  flex: 1.5,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between'
+}  react-native/no-inline-styles
+  174:26  warning  Inline style: { flexDirection: 'row', alignItems: 'center' }                                                      react-native/no-inline-styles
+  175:76  warning  Inline style: { marginRight: 16 }                                                                                 react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/HabitDetail/HabitDetailScreen.tsx
+   4:10  error    'theme' is defined but never used  @typescript-eslint/no-unused-vars
+  95:22  warning  Inline style: { width: 60 }        react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Home/HomeScreen.tsx
+   92:47  warning  Inline style: { justifyContent: 'center', alignItems: 'center' }                           react-native/no-inline-styles
+  169:50  warning  Inline style: {
+  borderColor: "isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'"
+}  react-native/no-inline-styles
+  176:44  warning  Inline style: { marginTop: 16, marginBottom: 16 }                                          react-native/no-inline-styles
+  177:42  warning  Inline style: {
+  borderColor: "isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'"
+}  react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Insights/InsightsScreen.tsx
+  59:40  warning  Inline style: {
+  borderColor: "isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'"
+}  react-native/no-inline-styles
+  82:45  warning  Inline style: {
+  borderColor: "isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)'"
+}  react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Onboarding/OnboardingScreen.tsx
+  210:36  warning  Inline style: { height: 24 }  react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Settings/EditProfileScreen.tsx
+   75:16  warning  Inline style: { flex: 1 }                                                 react-native/no-inline-styles
+   83:56  warning  Inline style: { opacity: 0.5 }                                            react-native/no-inline-styles
+  176:52  warning  Inline style: { opacity: 0.6 }                                            react-native/no-inline-styles
+  195:36  error    'isDark' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Settings/SettingsScreen.tsx
+  14:19  error  'isDark' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Social/AddFriendScreen.tsx
+   78:22  warning  Inline style: { width: 60 }                                                                                                                                                                                                                                                                                                                                                                                                   react-native/no-inline-styles
+  114:29  warning  Do not define components during render. React will see a new component type on every render and destroy the entire subtree’s DOM nodes and state (https://reactjs.org/docs/reconciliation.html#elements-of-different-types). Instead, move this component definition out of the parent component “AddFriendScreen” and pass data as props. If you want to allow component creation in props, set allowAsProps option to true  react/no-unstable-nested-components
+  125:26  warning  Inline style: { flex: 1 }                                                                                                                                                                                                                                                                                                                                                                                                     react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Social/ChallengesScreen.tsx
+  13:11  error    'user' is assigned a value but never used                         @typescript-eslint/no-unused-vars
+  17:47  warning  Inline style: { justifyContent: 'center', alignItems: 'center' }  react-native/no-inline-styles
+  30:22  warning  Inline style: { width: 40 }                                       react-native/no-inline-styles
+  62:47  warning  Inline style: { fontWeight: '700' }                               react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Social/LeaderboardScreen.tsx
+  33:47  warning  Inline style: { justifyContent: 'center', alignItems: 'center' }                                                                                                                                                                                                                                                                                                                                                                react-native/no-inline-styles
+  55:29  warning  Do not define components during render. React will see a new component type on every render and destroy the entire subtree’s DOM nodes and state (https://reactjs.org/docs/reconciliation.html#elements-of-different-types). Instead, move this component definition out of the parent component “LeaderboardScreen” and pass data as props. If you want to allow component creation in props, set allowAsProps option to true  react/no-unstable-nested-components
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/screens/Social/SocialScreen.tsx
+   2:60  error    'TextInput' is defined but never used                             @typescript-eslint/no-unused-vars
+  27:19  error    'isDark' is assigned a value but never used                       @typescript-eslint/no-unused-vars
+  33:5   error    'friendProfiles' is assigned a value but never used               @typescript-eslint/no-unused-vars
+  61:47  warning  Inline style: { justifyContent: 'center', alignItems: 'center' }  react-native/no-inline-styles
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/services/firebase.ts
+  1:34  error  'getApp' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/tarun/Desktop/new_react_native/AwesomeProject/src/services/socialService.ts
+  145:14  error  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 73 problems (26 errors, 47 warnings)
+

@@ -65,7 +65,7 @@ const HabitCard: React.FC<HabitCardProps> = React.memo(({ habit, isCompleted = f
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.background,
     borderRadius: theme.radius.xl,
     padding: 16,
     marginBottom: 16,

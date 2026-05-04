@@ -1,0 +1,60 @@
+name: iOS-ipa-build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    name: 🎉 iOS Build
+    runs-on: macos-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📦 Install deps
+        run: npm install
+
+      - name: 📦 Install pods
+        run: |
+          cd ios
+          pod install
+
+      # 🚫 Build WITHOUT code signing (same as Flutter)
+      - name: 🏗 Build iOS (no codesign)
+        run: |
+          cd ios
+          xcodebuild \
+            -workspace YourApp.xcworkspace \
+            -scheme YourApp \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO
+
+      # 📦 Create IPA structure
+      - name: 📁 Create Payload
+        run: mkdir Payload
+        working-directory: ios/build/Build/Products/Release-iphoneos
+
+      - name: 📁 Move .app into Payload
+        run: mv *.app Payload/
+        working-directory: ios/build/Build/Products/Release-iphoneos
+
+      - name: 📦 Zip to IPA
+        run: zip -qq -r -9 ReactNativeIpa.ipa Payload
+        working-directory: ios/build/Build/Products/Release-iphoneos
+
+      - name: 📤 Upload IPA
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ios/build/Build/Products/Release-iphoneos/ReactNativeIpa.ipa
+          tag: v1.0
+          overwrite: true
+          body: "React Native unsigned IPA"

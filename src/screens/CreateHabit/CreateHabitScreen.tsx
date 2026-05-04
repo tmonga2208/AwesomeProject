@@ -12,7 +12,7 @@ import {
   Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { theme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconPickerModal from '@/components/IconPickerModal/IconPickerModal';
@@ -22,6 +22,7 @@ import { useStore } from '@/store';
 import { useAuthStore } from '@/store/authStore';
 
 const CreateHabitScreen = () => {
+  const { colors, isDark } = useTheme();
   const navigation = useNavigation();
   const { addHabit } = useStore();
   const { user } = useAuthStore();
@@ -38,9 +39,9 @@ const CreateHabitScreen = () => {
   const [reminderEnabled, setReminderEnabled] = useState(true);
 
   const categories = [
-    { label: 'Mindfulness', color: '#FFD1DC' }, // light pink
-    { label: 'Health', color: '#D4E2FF' }, // light blue
-    { label: 'Focus', color: '#D5EDD0' }, // light green
+    { label: 'Mindfulness', color: isDark ? '#5A3A42' : '#FFD1DC' },
+    { label: 'Health', color: isDark ? '#2E3A55' : '#D4E2FF' },
+    { label: 'Focus', color: isDark ? '#2E4A2E' : '#D5EDD0' },
   ];
 
   const units = ['steps', 'min', 'hours', 'count'];
@@ -53,12 +54,12 @@ const CreateHabitScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.headerRow}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Feather name="arrow-left" size={20} color={theme.colors.onSurface} />
+        <TouchableOpacity style={[styles.backButton, { backgroundColor: colors.surfaceVariant }]} onPress={() => navigation.goBack()}>
+          <Feather name="arrow-left" size={20} color={colors.onSurface} />
         </TouchableOpacity>
-        <Text style={styles.appTitle}>Ethos</Text>
+        <Text style={[styles.appTitle, { color: colors.primary }]}>Ethos</Text>
         <Image 
           source={{ uri: 'https://i.pravatar.cc/100?img=5' }} 
           style={styles.avatar} 
@@ -67,21 +68,21 @@ const CreateHabitScreen = () => {
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <View style={styles.titleSection}>
-          <Text style={styles.pageTitle}>New Ritual</Text>
-          <Text style={styles.pageSubtitle}>Design a habit that nourishes your daily life.</Text>
+          <Text style={[styles.pageTitle, { color: colors.onSurface }]}>New Ritual</Text>
+          <Text style={[styles.pageSubtitle, { color: colors.onSurfaceVariant }]}>Design a habit that nourishes your daily life.</Text>
         </View>
 
         {/* Habit Identity Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardLabel}>Habit Identity</Text>
-          <View style={styles.inputContainer}>
-            <TouchableOpacity onPress={() => bottomSheetModalRef.current?.present()} style={styles.iconSelectorBadge}>
-               <MaterialCommunityIcons name={selectedIcon} size={28} color={theme.colors.primary} />
+        <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.cardLabel, { color: colors.primary }]}>Habit Identity</Text>
+          <View style={[styles.inputContainer, { backgroundColor: colors.surfaceVariant }]}>
+            <TouchableOpacity onPress={() => bottomSheetModalRef.current?.present()} style={[styles.iconSelectorBadge, { backgroundColor: colors.primaryContainer }]}>
+               <MaterialCommunityIcons name={selectedIcon} size={28} color={colors.primary} />
             </TouchableOpacity>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: colors.onSurface }]}
               placeholder="e.g., Morning Meditation"
-              placeholderTextColor={theme.colors.outlineVariant}
+              placeholderTextColor={colors.outlineVariant}
               value={name}
               onChangeText={setName}
             />
@@ -94,105 +95,105 @@ const CreateHabitScreen = () => {
                 style={[
                   styles.chip, 
                   { backgroundColor: cat.color },
-                  selectedCategory === cat.label && { borderWidth: 1, borderColor: 'rgba(0,0,0,0.2)' }
+                  selectedCategory === cat.label && { borderWidth: 1, borderColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)' }
                 ]}
                 onPress={() => setSelectedCategory(cat.label)}
               >
-                <Text style={styles.chipText}>{cat.label}</Text>
+                <Text style={[styles.chipText, { color: colors.onSurfaceVariant }]}>{cat.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
         {/* Frequency Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardLabel}>Frequency</Text>
-          <View style={styles.segmentedControl}>
+        <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.cardLabel, { color: colors.primary }]}>Frequency</Text>
+          <View style={[styles.segmentedControl, { backgroundColor: colors.surfaceVariant }]}>
             <TouchableOpacity 
-              style={[styles.segment, frequency === 'Daily' && styles.activeSegment]}
+              style={[styles.segment, frequency === 'Daily' && [styles.activeSegment, { backgroundColor: colors.surface }]]}
               onPress={() => setFrequency('Daily')}
             >
-              <Text style={[styles.segmentText, frequency === 'Daily' && styles.activeSegmentText]}>Daily</Text>
+              <Text style={[styles.segmentText, { color: colors.outline }, frequency === 'Daily' && { color: colors.onSurface, fontWeight: theme.typography.weights.semibold }]}>Daily</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-              style={[styles.segment, frequency === 'Weekly' && styles.activeSegment]}
+              style={[styles.segment, frequency === 'Weekly' && [styles.activeSegment, { backgroundColor: colors.surface }]]}
               onPress={() => setFrequency('Weekly')}
             >
-              <Text style={[styles.segmentText, frequency === 'Weekly' && styles.activeSegmentText]}>Weekly</Text>
+              <Text style={[styles.segmentText, { color: colors.outline }, frequency === 'Weekly' && { color: colors.onSurface, fontWeight: theme.typography.weights.semibold }]}>Weekly</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.goalRow}>
-            <Text style={styles.goalText}>Goal: {goal}x {frequency.toLowerCase()}</Text>
+            <Text style={[styles.goalText, { color: colors.onSurface }]}>Goal: {goal}x {frequency.toLowerCase()}</Text>
             <View style={styles.stepper}>
-              <TouchableOpacity style={styles.stepperButton} onPress={() => setGoal(Math.max(1, goal - 1))}>
-                <Feather name="minus" size={16} color={theme.colors.onSurface} />
+              <TouchableOpacity style={[styles.stepperButton, { backgroundColor: colors.surfaceVariant }]} onPress={() => setGoal(Math.max(1, goal - 1))}>
+                <Feather name="minus" size={16} color={colors.onSurface} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.stepperButton} onPress={() => setGoal(goal + 1)}>
-                <Feather name="plus" size={16} color={theme.colors.onSurface} />
+              <TouchableOpacity style={[styles.stepperButton, { backgroundColor: colors.surfaceVariant }]} onPress={() => setGoal(goal + 1)}>
+                <Feather name="plus" size={16} color={colors.onSurface} />
               </TouchableOpacity>
             </View>
           </View>
         </View>
 
         {/* Target Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardLabel}>Daily Target (Optional)</Text>
+        <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.cardLabel, { color: colors.primary }]}>Daily Target (Optional)</Text>
           <View style={styles.targetContainer}>
-            <View style={styles.targetInputWrapper}>
+            <View style={[styles.targetInputWrapper, { backgroundColor: colors.surfaceVariant }]}>
               <TextInput
-                style={styles.targetInput}
+                style={[styles.targetInput, { color: colors.onSurface }]}
                 placeholder="10000"
-                placeholderTextColor={theme.colors.outlineVariant}
+                placeholderTextColor={colors.outlineVariant}
                 value={targetValue}
                 onChangeText={setTargetValue}
                 keyboardType="numeric"
               />
             </View>
-            <Text style={styles.targetDivider}>✕</Text>
+            <Text style={[styles.targetDivider, { color: colors.outline }]}>✕</Text>
             <TouchableOpacity 
-              style={[styles.targetInputWrapper, { flex: 1.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}
+              style={[styles.targetInputWrapper, { flex: 1.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: colors.surfaceVariant }]}
               onPress={() => unitModalRef.current?.present()}
             >
-              <Text style={[styles.targetInput, !targetUnit && { color: theme.colors.outlineVariant }]}>
+              <Text style={[styles.targetInput, !targetUnit && { color: colors.outlineVariant }]}>
                 {targetUnit || 'Select unit...'}
               </Text>
-              <Feather name="chevron-down" size={20} color={theme.colors.outline} />
+              <Feather name="chevron-down" size={20} color={colors.outline} />
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Gentle Reminder Card */}
-        <View style={styles.card}>
-          <Text style={styles.cardLabel}>Gentle Reminder</Text>
+        <View style={[styles.card, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.cardLabel, { color: colors.primary }]}>Gentle Reminder</Text>
           <View style={styles.reminderRow}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Feather name="bell" size={20} color={theme.colors.primary} style={{ marginRight: 16 }} />
-              <Text style={styles.timeText}>07:30 AM</Text>
+              <Feather name="bell" size={20} color={colors.primary} style={{ marginRight: 16 }} />
+              <Text style={[styles.timeText, { color: colors.onSurface }]}>07:30 AM</Text>
             </View>
-            <Feather name="chevron-right" size={20} color={theme.colors.outline} />
+            <Feather name="chevron-right" size={20} color={colors.outline} />
           </View>
-          <View style={styles.divider} />
+          <View style={[styles.divider, { backgroundColor: colors.outlineVariant }]} />
           <View style={styles.toggleRow}>
-            <Text style={styles.toggleText}>Notification enabled</Text>
+            <Text style={[styles.toggleText, { color: colors.outline }]}>Notification enabled</Text>
             <Switch 
               value={reminderEnabled} 
               onValueChange={setReminderEnabled} 
-              trackColor={{ false: theme.colors.outlineVariant, true: theme.colors.primary }}
+              trackColor={{ false: colors.outlineVariant, true: colors.primary }}
               thumbColor="#FFFFFF"
             />
           </View>
         </View>
 
         {/* Visualizing Success Card */}
-        <View style={styles.card}>
+        <View style={[styles.card, { backgroundColor: colors.surface }]}>
           <View style={styles.visualizingHeader}>
             <View>
-              <Text style={styles.visualizingTitle}>Visualizing Success</Text>
-              <Text style={styles.visualizingSubtitle}>Your journey starts with a single{'\n'}intent.</Text>
+              <Text style={[styles.visualizingTitle, { color: colors.onSurface }]}>Visualizing Success</Text>
+              <Text style={[styles.visualizingSubtitle, { color: colors.primary }]}>Your journey starts with a single{'\n'}intent.</Text>
             </View>
-            <View style={styles.leafIconBadge}>
-              <Feather name="feather" size={18} color={theme.colors.primary} />
+            <View style={[styles.leafIconBadge, { borderColor: colors.outlineVariant }]}>
+              <Feather name="feather" size={18} color={colors.primary} />
             </View>
           </View>
           
@@ -204,7 +205,7 @@ const CreateHabitScreen = () => {
         </View>
 
         {/* Save Button */}
-        <TouchableOpacity style={styles.saveButton} onPress={async () => {
+        <TouchableOpacity style={[styles.saveButton, { backgroundColor: colors.primary }]} onPress={async () => {
           if (!name.trim()) {
             Alert.alert('Missing Name', 'Please enter a habit name.');
             return;
@@ -233,7 +234,7 @@ const CreateHabitScreen = () => {
             console.error('[CreateHabit] save error:', error);
           }
         }}>
-          <Text style={styles.saveButtonText}>Save Habit</Text>
+          <Text style={[styles.saveButtonText, { color: colors.onPrimary }]}>Save Habit</Text>
         </TouchableOpacity>
       </ScrollView>
 
@@ -246,23 +247,23 @@ const CreateHabitScreen = () => {
         index={0}
         snapPoints={['40%']}
         backdropComponent={renderBackdrop}
-        backgroundStyle={styles.bottomSheetBackground}
+        backgroundStyle={[styles.bottomSheetBackground, { backgroundColor: colors.background }]}
       >
         <View style={styles.bottomSheetContainer}>
-          <Text style={styles.bottomSheetTitle}>Select Unit</Text>
+          <Text style={[styles.bottomSheetTitle, { color: colors.onSurface }]}>Select Unit</Text>
           {units.map((unit) => (
             <GHTouchableOpacity
               key={unit}
-              style={styles.unitOptionRow}
+              style={[styles.unitOptionRow, { borderBottomColor: colors.outlineVariant }]}
               onPress={() => {
                 setTargetUnit(unit);
                 unitModalRef.current?.dismiss();
               }}
             >
-              <Text style={[styles.unitOptionText, targetUnit === unit && styles.unitOptionTextActive]}>
+              <Text style={[styles.unitOptionText, { color: colors.onSurface }, targetUnit === unit && { fontWeight: theme.typography.weights.semibold, color: colors.primary }]}>
                 {unit}
               </Text>
-              {targetUnit === unit && <Feather name="check" size={20} color={theme.colors.primary} />}
+              {targetUnit === unit && <Feather name="check" size={20} color={colors.primary} />}
             </GHTouchableOpacity>
           ))}
         </View>
@@ -274,7 +275,6 @@ const CreateHabitScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
   },
   headerRow: {
     flexDirection: 'row',
@@ -288,14 +288,12 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: theme.colors.surfaceVariant,
     justifyContent: 'center',
     alignItems: 'center',
   },
   appTitle: {
     fontSize: 20,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.primary,
     fontFamily: theme.typography.fonts.primary,
   },
   avatar: {
@@ -313,17 +311,14 @@ const styles = StyleSheet.create({
   pageTitle: {
     fontSize: theme.typography.sizes.h1,
     fontWeight: theme.typography.weights.medium,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: 8,
   },
   pageSubtitle: {
     fontSize: 16,
-    color: theme.colors.onSurfaceVariant,
     fontFamily: theme.typography.fonts.primary,
   },
   card: {
-    backgroundColor: theme.colors.surface,
     borderRadius: theme.radius.lg,
     padding: 24,
     marginBottom: 16,
@@ -332,7 +327,6 @@ const styles = StyleSheet.create({
   cardLabel: {
     fontSize: theme.typography.sizes.labelCaps,
     fontWeight: theme.typography.weights.bold,
-    color: theme.colors.primary,
     fontFamily: theme.typography.fonts.primary,
     letterSpacing: theme.typography.letterSpacings.labelCaps,
     marginBottom: 16,
@@ -342,7 +336,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: theme.radius.md,
     padding: 8,
   },
@@ -350,7 +343,6 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: theme.radius.default,
-    backgroundColor: theme.colors.primaryContainer,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -358,7 +350,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: theme.typography.sizes.h3,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     paddingVertical: 12,
   },
@@ -373,13 +364,11 @@ const styles = StyleSheet.create({
   },
   chipText: {
     fontSize: 12,
-    color: theme.colors.onSurfaceVariant,
     fontFamily: theme.typography.fonts.primary,
     fontWeight: '500',
   },
   segmentedControl: {
     flexDirection: 'row',
-    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: theme.radius.md,
     padding: 4,
     marginBottom: 24,
@@ -391,18 +380,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   activeSegment: {
-    backgroundColor: theme.colors.surface,
     ...theme.shadows.soft,
   },
   segmentText: {
     fontSize: 15,
-    color: theme.colors.outline,
     fontFamily: theme.typography.fonts.primary,
     fontWeight: '500',
-  },
-  activeSegmentText: {
-    color: theme.colors.onSurface,
-    fontWeight: theme.typography.weights.semibold,
   },
   goalRow: {
     flexDirection: 'row',
@@ -411,7 +394,6 @@ const styles = StyleSheet.create({
   },
   goalText: {
     fontSize: theme.typography.sizes.bodySm,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
   },
   stepper: {
@@ -422,7 +404,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: theme.colors.surfaceVariant,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -434,12 +415,10 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: theme.typography.sizes.h2,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
   },
   divider: {
     height: 1,
-    backgroundColor: theme.colors.outlineVariant,
     marginBottom: 20,
   },
   toggleRow: {
@@ -449,7 +428,6 @@ const styles = StyleSheet.create({
   },
   toggleText: {
     fontSize: 12,
-    color: theme.colors.outline,
     fontFamily: theme.typography.fonts.primary,
   },
   visualizingHeader: {
@@ -461,13 +439,11 @@ const styles = StyleSheet.create({
   visualizingTitle: {
     fontSize: 20,
     fontWeight: theme.typography.weights.medium,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: 8,
   },
   visualizingSubtitle: {
     fontSize: theme.typography.sizes.bodySm,
-    color: theme.colors.primary,
     fontFamily: theme.typography.fonts.primary,
     lineHeight: 20,
   },
@@ -476,7 +452,6 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
     borderWidth: 1,
-    borderColor: theme.colors.outlineVariant,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -486,7 +461,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   saveButton: {
-    backgroundColor: theme.colors.primary,
     borderRadius: theme.radius.lg,
     paddingVertical: 20,
     flexDirection: 'row',
@@ -496,15 +470,8 @@ const styles = StyleSheet.create({
     ...theme.shadows.medium,
   },
   saveButtonText: {
-    color: theme.colors.onPrimary,
     fontSize: theme.typography.sizes.h3,
     fontWeight: theme.typography.weights.medium,
-    fontFamily: theme.typography.fonts.primary,
-  },
-  saveButtonDecoration: {
-    color: theme.colors.onPrimary,
-    fontSize: theme.typography.sizes.h3,
-    fontWeight: '300',
     fontFamily: theme.typography.fonts.primary,
   },
   targetContainer: {
@@ -513,24 +480,20 @@ const styles = StyleSheet.create({
   },
   targetInputWrapper: {
     flex: 1,
-    backgroundColor: theme.colors.surfaceVariant,
     borderRadius: theme.radius.default,
     paddingHorizontal: 16,
   },
   targetInput: {
     fontSize: theme.typography.sizes.bodyMd,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     paddingVertical: 14,
   },
   targetDivider: {
     marginHorizontal: 16,
     fontSize: theme.typography.sizes.bodyMd,
-    color: theme.colors.outline,
     fontFamily: theme.typography.fonts.primary,
   },
   bottomSheetBackground: {
-    backgroundColor: theme.colors.background,
     borderTopLeftRadius: theme.radius.xl,
     borderTopRightRadius: theme.radius.xl,
   },
@@ -541,7 +504,6 @@ const styles = StyleSheet.create({
   bottomSheetTitle: {
     fontSize: 20,
     fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
     marginBottom: 20,
   },
@@ -551,16 +513,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: theme.colors.outlineVariant,
   },
   unitOptionText: {
     fontSize: theme.typography.sizes.h3,
-    color: theme.colors.onSurface,
     fontFamily: theme.typography.fonts.primary,
-  },
-  unitOptionTextActive: {
-    fontWeight: theme.typography.weights.semibold,
-    color: theme.colors.primary,
   },
 });
 

@@ -63,4 +63,69 @@ export const colors = {
   }
 };
 
+/**
+ * Aura Design System — Dark Color Palette
+ *
+ * Carefully mapped dark equivalents that preserve the sage/organic identity
+ * while providing comfortable contrast in low-light conditions.
+ */
+export const darkColors: typeof colors = {
+  // ── Core ──────────────────────────────────────────────────
+  primary: '#8BAF8C',           // Brighter sage for dark backgrounds
+  primaryContainer: '#3A5A3B',
+  onPrimary: '#1A2E1B',
+  onPrimaryContainer: '#C8E6C9',
+  inversePrimary: '#4d614e',
+
+  secondary: '#9AADDC',
+  secondaryContainer: '#384868',
+  onSecondary: '#1E2A45',
+  onSecondaryContainer: '#C6D4FD',
+
+  tertiary: '#C4949D',
+  tertiaryContainer: '#5A3640',
+  onTertiary: '#2D1520',
+  onTertiaryContainer: '#FFD9DF',
+
+  // ── Surfaces ─────────────────────────────────────────────
+  background: '#121212',        // True dark
+  onBackground: '#E4E2DF',     // Light text
+
+  surface: '#1E1E1E',           // Cards
+  surfaceDim: '#121212',
+  surfaceBright: '#3A3A3A',
+  surfaceVariant: '#2A2A2A',
+  surfaceContainerLowest: '#0E0E0E',
+  surfaceContainerLow: '#1A1A1A',
+  surfaceContainer: '#1E1E1E',
+  surfaceContainerHigh: '#282828',
+  surfaceContainerHighest: '#333333',
+
+  onSurface: '#E4E2DF',        // Primary text
+  onSurfaceVariant: '#B0B0B0', // Muted text
+  inverseSurface: '#E4E2DF',
+  inverseOnSurface: '#30312F',
+
+  surfaceTint: '#8BAF8C',
+
+  // ── Outlines ─────────────────────────────────────────────
+  outline: '#8C918B',
+  outlineVariant: '#444844',
+
+  // ── Error ────────────────────────────────────────────────
+  error: '#FFB4AB',
+  onError: '#690005',
+  errorContainer: '#93000A',
+  onErrorContainer: '#FFB4AB',
+
+  // ── Custom habit colors (brightened for dark backgrounds) ─
+  habits: {
+    health: '#C4949D',
+    fitness: '#9AADDC',
+    mindfulness: '#A4BFA4',
+    productivity: '#C4949D',
+    creative: '#C4A882',
+  }
+};
+
 export type Colors = typeof colors;

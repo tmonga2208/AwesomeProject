@@ -6,9 +6,24 @@ import auth from '@react-native-firebase/auth';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import RootNavigator from './src/navigation/RootNavigator';
-import { theme } from './src/theme';
+import { ThemeProvider, useTheme } from './src/theme';
 import { useAuthStore } from './src/store/authStore';
 import { useStore } from './src/store';
+
+/** Inner component that has access to ThemeContext */
+const AppContent = () => {
+  const { colors, isDark } = useTheme();
+
+  return (
+    <>
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.background}
+      />
+      <RootNavigator />
+    </>
+  );
+};
 
 function App() {
   const { setUser, setLoading, user } = useAuthStore();
@@ -57,13 +72,11 @@ function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <BottomSheetModalProvider>
-          <StatusBar 
-            barStyle="dark-content" 
-            backgroundColor={theme.colors.background} 
-          />
-          <RootNavigator />
-        </BottomSheetModalProvider>
+        <ThemeProvider>
+          <BottomSheetModalProvider>
+            <AppContent />
+          </BottomSheetModalProvider>
+        </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { useStore } from '@/store';
 import { useAuthStore } from '@/store/authStore';
-import { theme } from '@/theme';
+import { theme, useTheme } from '@/theme';
 import ActivityRing from '@/components/ActivityRing/ActivityRing';
 import HabitCard from '@/components/HabitCard/HabitCard';
 import Feather from 'react-native-vector-icons/Feather';
@@ -11,8 +11,10 @@ import { format, subDays, startOfDay, endOfDay } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HomeStackParamList } from '@/navigation/types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeScreen = () => {
+  const { colors, isDark } = useTheme();
   const { habits, completions, isLoadingHabits, userProfile, addCompletion } = useStore();
   const { user } = useAuthStore();
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList>>();
@@ -79,7 +81,7 @@ const HomeScreen = () => {
   const xp = userProfile?.totalXP || 0;
   const displayName = userProfile?.displayName || user?.displayName || 'there';
   const firstName = displayName.split(' ')[0];
-  const avatarUrl = userProfile?.avatarUrl || user?.photoURL || 'https://i.pravatar.cc/100?img=5';
+ 
 
   // Greeting based on time of day
   const hour = new Date().getHours();
@@ -87,28 +89,27 @@ const HomeScreen = () => {
 
   if (isLoadingHabits) {
     return (
-      <SafeAreaView style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.headerRow}>
-          <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-          <Text style={styles.appTitle}>Ethos</Text>
+          <Text style={[styles.levelText, { backgroundColor: colors.primaryContainer, color: colors.onPrimaryContainer }]}>1</Text>
           <TouchableOpacity>
-            <Feather name="bell" size={20} color={theme.colors.onSurface} />
+            <Feather name="bell" size={20} color={colors.onSurface} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.greetingSection}>
-          <Text style={styles.dateText}>{format(new Date(), 'EEEE, MMMM d').toUpperCase()}</Text>
-          <Text style={styles.greetingText}>{greeting}, {firstName}</Text>
-          <Text style={styles.subtitleText}>
+          <Text style={[styles.dateText, { color: colors.onSurfaceVariant }]}>{format(new Date(), 'EEEE, MMMM d').toUpperCase()}</Text>
+          <Text style={[styles.greetingText, { color: colors.onSurface }]}>{greeting}, {firstName}</Text>
+          <Text style={[styles.subtitleText, { color: colors.outline }]}>
             {streak > 0
               ? `You're on a ${streak}-day streak. Keep the\nmomentum.`
               : 'Start building your daily rituals today.'}
@@ -122,33 +123,33 @@ const HomeScreen = () => {
               progress={progress} 
               size={220} 
               strokeWidth={16} 
-              color={theme.colors.primary} 
-              backgroundColor={theme.colors.surfaceVariant} 
+              color={colors.primary} 
+              backgroundColor={colors.surfaceVariant} 
             />
             <View style={styles.ringCenterText}>
-              <Text style={styles.percentageText}>{progressPercent}<Text style={styles.percentageSymbol}>%</Text></Text>
-              <Text style={styles.ringLabel}>TODAY'S FLOW</Text>
+              <Text style={[styles.percentageText, { color: colors.onSurface }]}>{progressPercent}<Text style={[styles.percentageSymbol, { color: colors.outline }]}>%</Text></Text>
+              <Text style={[styles.ringLabel, { color: colors.onSurfaceVariant }]}>TODAY'S FLOW</Text>
             </View>
           </View>
           
           {/* Pills */}
           <View style={styles.pillsRow}>
-            <View style={styles.pill}>
-              <MaterialCommunityIcons name="lightning-bolt" size={12} color={theme.colors.primary} />
-              <Text style={styles.pillText}>{streak} DAY STREAK</Text>
+            <View style={[styles.pill, { backgroundColor: colors.surfaceVariant }]}>
+              <MaterialCommunityIcons name="lightning-bolt" size={12} color={colors.primary} />
+              <Text style={[styles.pillText, { color: colors.onSurface }]}>{streak} DAY STREAK</Text>
             </View>
-            <View style={styles.pill}>
-              <MaterialCommunityIcons name="star-four-points-outline" size={12} color={theme.colors.tertiary} />
-              <Text style={styles.pillText}>{xp} XP</Text>
+            <View style={[styles.pill, { backgroundColor: colors.surfaceVariant }]}>
+              <MaterialCommunityIcons name="star-four-points-outline" size={12} color={colors.tertiary} />
+              <Text style={[styles.pillText, { color: colors.onSurface }]}>{xp} XP</Text>
             </View>
           </View>
         </View>
 
         {/* Daily Habits */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Daily Habits</Text>
+          <Text style={[styles.sectionTitle, { color: colors.onSurface }]}>Daily Habits</Text>
           <TouchableOpacity>
-            <Text style={styles.editAllText}>EDIT ALL</Text>
+            <Text style={[styles.editAllText, { color: colors.primary }]}>EDIT ALL</Text>
           </TouchableOpacity>
         </View>
         
@@ -163,27 +164,27 @@ const HomeScreen = () => {
               />
             ))
           ) : (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>No habits yet. Tap + to add one!</Text>
+            <View style={[styles.emptyContainer, { backgroundColor: colors.surface, borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)' }]}>
+              <Text style={[styles.emptyText, { color: colors.outline }]}>No habits yet. Tap + to add one!</Text>
             </View>
           )}
         </View>
 
         {/* Weekly Overview */}
-        <Text style={[styles.sectionTitle, { marginTop: 16, marginBottom: 16 }]}>Weekly Overview</Text>
-        <View style={styles.weeklyCard}>
+        <Text style={[styles.sectionTitle, { color: colors.onSurface, marginTop: 16, marginBottom: 16 }]}>Weekly Overview</Text>
+        <View style={[styles.weeklyCard, { backgroundColor: colors.surface, borderColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)' }]}>
           <View style={styles.weeklyHeader}>
             <View>
-              <Text style={styles.weeklySubtitle}>MOST CONSISTENT</Text>
-              <Text style={styles.weeklyTitle}>
+              <Text style={[styles.weeklySubtitle, { color: colors.outline }]}>MOST CONSISTENT</Text>
+              <Text style={[styles.weeklyTitle, { color: colors.onSurface }]}>
                 {mostConsistentHabit?.name || 'No data yet'}
               </Text>
             </View>
-            <View style={styles.weeklyIconBadge}>
+            <View style={[styles.weeklyIconBadge, { backgroundColor: colors.primaryContainer }]}>
               <MaterialCommunityIcons 
                 name={mostConsistentHabit?.iconName || mostConsistentHabit?.icon || 'star-outline'} 
                 size={16} 
-                color={theme.colors.primary} 
+                color={colors.primary} 
               />
             </View>
           </View>
@@ -194,8 +195,8 @@ const HomeScreen = () => {
                 key={idx} 
                 style={[
                   styles.bar, 
-                  { height: Math.max(4, 60 * val) }, 
-                  idx === 6 && styles.activeBar
+                  { height: Math.max(4, 60 * val), backgroundColor: colors.surfaceVariant }, 
+                  idx === 6 && { backgroundColor: colors.primary },
                 ]} 
               />
             ))}
@@ -205,47 +206,57 @@ const HomeScreen = () => {
       </ScrollView>
 
       {/* Floating Action Button */}
-      <TouchableOpacity style={styles.fab} onPress={handleCreateHabitPress} activeOpacity={0.8}>
-        <Feather name="plus" size={24} color={theme.colors.onPrimary} />
+      <TouchableOpacity style={[styles.fab, { backgroundColor: colors.primary }]} onPress={handleCreateHabitPress} activeOpacity={0.8}>
+        <Feather name="plus" size={24} color={colors.onPrimary} />
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: theme.colors.background },
+  container: { flex: 1 },
   scrollContent: { paddingHorizontal: theme.spacing.containerPadding, paddingTop: 16, paddingBottom: 100 },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.xl },
   avatar: { width: 36, height: 36, borderRadius: 18 },
-  appTitle: { fontSize: 22, fontWeight: theme.typography.weights.semibold, color: theme.colors.primary, fontFamily: theme.typography.fonts.primary },
+  appTitle: { fontSize: 22, fontWeight: theme.typography.weights.semibold, fontFamily: theme.typography.fonts.primary },
   greetingSection: { marginBottom: theme.spacing.xxl },
-  dateText: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.bold, color: theme.colors.onSurfaceVariant, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps, marginBottom: 8 },
-  greetingText: { fontSize: theme.typography.sizes.h1, fontWeight: theme.typography.weights.semibold, color: theme.colors.onSurface, fontFamily: theme.typography.fonts.primary, marginBottom: 12, letterSpacing: theme.typography.letterSpacings.h1, lineHeight: theme.typography.lineHeights.h1 },
-  subtitleText: { fontSize: theme.typography.sizes.bodyMd, color: theme.colors.outline, fontFamily: theme.typography.fonts.primary, lineHeight: theme.typography.lineHeights.bodyMd },
+  dateText: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.bold, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps, marginBottom: 8 },
+  greetingText: { fontSize: theme.typography.sizes.h1, fontWeight: theme.typography.weights.semibold, fontFamily: theme.typography.fonts.primary, marginBottom: 12, letterSpacing: theme.typography.letterSpacings.h1, lineHeight: theme.typography.lineHeights.h1 },
+  subtitleText: { fontSize: theme.typography.sizes.bodyMd, fontFamily: theme.typography.fonts.primary, lineHeight: theme.typography.lineHeights.bodyMd },
   progressSection: { alignItems: 'center', marginBottom: theme.spacing.sectionGap },
   ringWrapper: { alignItems: 'center', justifyContent: 'center', marginBottom: theme.spacing.lg },
   ringCenterText: { position: 'absolute', alignItems: 'center', justifyContent: 'center' },
-  percentageText: { fontSize: 48, fontWeight: theme.typography.weights.semibold, color: theme.colors.onSurface, fontFamily: theme.typography.fonts.primary, letterSpacing: -1 },
-  percentageSymbol: { fontSize: 24, color: theme.colors.outline },
-  ringLabel: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.bold, color: theme.colors.onSurfaceVariant, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps, marginTop: 4 },
+  percentageText: { fontSize: 48, fontWeight: theme.typography.weights.semibold, fontFamily: theme.typography.fonts.primary, letterSpacing: -1 },
+  percentageSymbol: { fontSize: 24 },
+  ringLabel: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.bold, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps, marginTop: 4 },
   pillsRow: { flexDirection: 'row', gap: 12 },
-  pill: { flexDirection: 'row', alignItems: 'center', backgroundColor: theme.colors.surfaceVariant, paddingHorizontal: 16, paddingVertical: 10, borderRadius: theme.radius.full, gap: 6 },
-  pillText: { fontSize: 12, fontWeight: theme.typography.weights.semibold, color: theme.colors.onSurface, fontFamily: theme.typography.fonts.primary, letterSpacing: 0.5 },
+  pill: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 10, borderRadius: theme.radius.full, gap: 6 },
+  pillText: { fontSize: 12, fontWeight: theme.typography.weights.semibold, fontFamily: theme.typography.fonts.primary, letterSpacing: 0.5 },
   sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing.lg },
-  sectionTitle: { fontSize: theme.typography.sizes.h2, fontWeight: theme.typography.weights.semibold, color: theme.colors.onSurface, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.h2 },
-  editAllText: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.bold, color: theme.colors.primary, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps },
+  sectionTitle: { fontSize: theme.typography.sizes.h2, fontWeight: theme.typography.weights.semibold, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.h2 },
+  editAllText: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.bold, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps },
   habitsList: { marginBottom: theme.spacing.sectionGap },
-  emptyContainer: { padding: 32, alignItems: 'center', backgroundColor: theme.colors.surface, borderRadius: theme.radius.xl, ...theme.shadows.soft, borderWidth: 1, borderColor: 'rgba(0,0,0,0.03)' },
-  emptyText: { fontFamily: theme.typography.fonts.primary, fontSize: theme.typography.sizes.bodyMd, color: theme.colors.outline },
-  weeklyCard: { backgroundColor: theme.colors.surface, borderRadius: theme.radius.xl, padding: 24, ...theme.shadows.soft, borderWidth: 1, borderColor: 'rgba(0,0,0,0.03)' },
+  emptyContainer: { padding: 32, alignItems: 'center', borderRadius: theme.radius.xl, ...theme.shadows.soft, borderWidth: 1 },
+  emptyText: { fontFamily: theme.typography.fonts.primary, fontSize: theme.typography.sizes.bodyMd },
+  weeklyCard: { borderRadius: theme.radius.xl, padding: 24, ...theme.shadows.soft, borderWidth: 1 },
   weeklyHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 },
-  weeklySubtitle: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.semibold, color: theme.colors.outline, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps, marginBottom: 4 },
-  weeklyTitle: { fontSize: theme.typography.sizes.bodyLg, fontWeight: theme.typography.weights.semibold, color: theme.colors.onSurface, fontFamily: theme.typography.fonts.primary },
-  weeklyIconBadge: { width: 48, height: 48, borderRadius: 24, backgroundColor: theme.colors.primaryContainer, justifyContent: 'center', alignItems: 'center' },
+  weeklySubtitle: { fontSize: theme.typography.sizes.labelCaps, fontWeight: theme.typography.weights.semibold, fontFamily: theme.typography.fonts.primary, letterSpacing: theme.typography.letterSpacings.labelCaps, marginBottom: 4 },
+  weeklyTitle: { fontSize: theme.typography.sizes.bodyLg, fontWeight: theme.typography.weights.semibold, fontFamily: theme.typography.fonts.primary },
+  weeklyIconBadge: { width: 48, height: 48, borderRadius: 24, justifyContent: 'center', alignItems: 'center' },
   chartContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', height: 80, paddingHorizontal: 8 },
-  bar: { width: 32, backgroundColor: theme.colors.surfaceVariant, borderRadius: theme.radius.full },
-  activeBar: { backgroundColor: theme.colors.primary },
-  fab: { position: 'absolute', bottom: 24, right: 24, width: 64, height: 64, borderRadius: theme.radius.full, backgroundColor: theme.colors.primary, justifyContent: 'center', alignItems: 'center', ...theme.shadows.medium },
+  bar: { width: 32, borderRadius: theme.radius.full },
+  fab: { position: 'absolute', bottom: 24, right: 24, width: 64, height: 64, borderRadius: theme.radius.full, justifyContent: 'center', alignItems: 'center', ...theme.shadows.medium },
+  levelText: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    lineHeight: 48,
+    fontSize: theme.typography.sizes.bodyLg,
+    fontWeight: theme.typography.weights.bold,
+    elevation: 10
+  }
 });
 
 export default HomeScreen;
