@@ -8,7 +8,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  SafeAreaView,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +18,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 const SignInScreen = () => {
   const navigation = useNavigation<AuthNavigationProp>();
 
