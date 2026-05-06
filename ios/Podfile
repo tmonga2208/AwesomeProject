@@ -17,6 +17,19 @@ end
 target 'AwesomeProject' do
   config = use_native_modules!
 
+  # Firebase Swift pods need module maps for these transitive dependencies
+  # when CocoaPods integrates pods as static libraries.
+  [
+    'FirebaseAppCheckInterop',
+    'FirebaseAuthInterop',
+    'FirebaseFirestoreInternal',
+    'GoogleUtilities',
+    'RecaptchaInterop',
+    'leveldb-library',
+  ].each do |pod_name|
+    pod pod_name, :modular_headers => true
+  end
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
